@@ -1,6 +1,13 @@
 # AppKit
 > Application framework based on Webkit, HTML5 and Python
 
+## Installation:
+Use Python `pip` command
+```
+$ pip install git+https://nitipit@bitbucket.org/nitipit/appkit.git
+```
+
+## Usage:
 ```
 from appkit import App
 
@@ -23,4 +30,6 @@ def webpage(app):
     	'utf-8',
     	''
     )
+    
+app.run()
 ```
