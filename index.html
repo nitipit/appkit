@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Appkit by nitipit</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/nitipit/appkit">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Appkit</h1>
+            <h2>Application framework based on Webkit, HTML5 and Python</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/nitipit/appkit/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/nitipit/appkit/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>AppKit</h1>
+
+<blockquote>
+<p>Application framework based on Webkit, HTML5 and Python</p>
+</blockquote>
+
+<h2>Installation:</h2>
+
+<p>Use Python <code>pip</code> command</p>
+
+<pre><code>$ pip install git+https://nitipit@bitbucket.org/nitipit/appkit.git
+</code></pre>
+
+<h2>Usage:</h2>
+
+<pre><code>#!/usr/bin/env python
+
+from appkit.app import App, response
+
+app = App()
+
+
+@app.route('/')
+def home():
+    return response('&lt;a href="app:///test/" /&gt;Link&lt;/a&gt;')
+
+
+@app.route('/test/')
+def test():
+    return response('&lt;h1&gt;Hello World&lt;/h1&gt;')
+
+app.run()
+</code></pre>
+
+<p><img src="https://raw.github.com/nitipit/appkit/master/doc/1.png" alt="screenshot-1"><img src="https://raw.github.com/nitipit/appkit/master/doc/2.png" alt="screenshot-2"></p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/nitipit">nitipit</a> can be found on <a href="https://github.com/nitipit/appkit">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
