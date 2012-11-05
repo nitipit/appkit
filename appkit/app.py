@@ -5,6 +5,7 @@ import os
 import tempfile
 import mimetypes
 import codecs
+import sys
 
 Gtk.init('')
 
@@ -16,8 +17,8 @@ class App(object):
     registed_route = dict()  # for url to function mapping
     document = None  # Root DOM
 
-    def __init__(self):
-        base_path = os.path.abspath(os.path.dirname(__file__))
+    def __init__(self, app_path=None):
+        app_path = os.path.abspath(os.path.dirname(sys.argv[0]))
         window = Gtk.Window()
         window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
@@ -57,7 +58,7 @@ class App(object):
         self.window = window
         self.webkit_web_view = webkit_web_view
         self.webkit_main_frame = webkit_main_frame
-        self.base_path = base_path
+        self.app_path = app_path
 
     def route(self, path=None):
         def decorator(fn):
@@ -119,7 +120,7 @@ class App(object):
                 f.close()
                 network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
             elif url.netloc == 'file':
-                file_path = self.base_path + url.path
+                file_path = self.app_path + url.path
                 file_path = os.path.normcase(file_path)
                 network_request.set_uri('file://' + file_path)
 
@@ -146,6 +147,9 @@ class App(object):
     def run(self):
         self.webkit_web_view.load_uri('app:///')
         Gtk.main()
+
+    def _get_app_path(self, path='.'):
+        print self.__file__
 
     def request_handler():
         pass
