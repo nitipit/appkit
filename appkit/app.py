@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 from gi.repository import Gtk, WebKit
-from urlparse import urlparse, urlunparse, parse_qs
+from urlparse import urlparse, parse_qs
 import os
-import pdb
 import tempfile
 import mimetypes
 import codecs
@@ -110,7 +109,6 @@ class App(object):
             network_response=None):
         print 'web_frame_resource_request_starting'
         url = urlparse(network_request.get_uri())
-        app_url = list()
         if url.scheme == 'app':
             if url.netloc == '':
                 (content, mimetype, encoding) = self.registed_route[url.path]()
@@ -135,7 +133,7 @@ class App(object):
         url = urlparse(network_response.get_uri())
         url = urlparse(url.path)
         query = parse_qs(url.query)
-        if query.has_key('tmp'):
+        if 'tmp' in query:
             print url.path
             os.remove(url.path)
 
