@@ -1,27 +1,18 @@
 #!/usr/bin/env python
 
 from appkit import App
+import os
 
 app = App()
 
 
 @app.route('/')
-def home(app, *args, **kw):
-    app.webkit_web_view.load_string(
-        '<a href="app:///webpage/">Webpage</a>',
-        'text/html',
-        'utf-8',
-        ''
-    )
+def home():
+    return ('<a href="app:///test/" />Link</a>', 'text/html')
 
 
-@app.route('/webpage/')
-def webpage(app):
-    app.webkit_web_view.load_string(
-        'We are on Webpage !',
-        'text/html',
-        'utf-8',
-        ''
-    )
+@app.route('/test/')
+def test():
+    return ('<h1>Hello World !</h1>', 'text/html')
 
 app.run()

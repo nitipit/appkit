@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 from gi.repository import Gtk, WebKit
-from urlparse import urlparse
+from urlparse import urlparse, urlunparse, parse_qs
 import os
+import pdb
+import tempfile
+import mimetypes
 
 Gtk.init('')
 
@@ -26,15 +29,33 @@ class App(object):
         scrollWindow.add(webkit_web_view)
         window.add(scrollWindow)
         window.connect('destroy', Gtk.main_quit)
-        webkit_web_view.connect('notify::load-status', self.on_notify_load_status)
-        webkit_web_view.connect('resource-request-starting', self.on_resource_request_starting)
-        webkit_web_view.connect('resource-load-finished', self.on_resource_load_finished)
+        webkit_web_view.connect(
+            'notify::load-status',
+            self.on_notify_load_status)
+        webkit_web_view.connect(
+            'resource-request-starting',
+            self.on_web_view_resource_request_starting)
+        webkit_web_view.connect(
+            'resource-response-received',
+            self.on_web_view_resource_response_received)
+        webkit_web_view.connect(
+            'resource-load-finished',
+            self.on_resource_load_finished)
         webkit_web_view.connect(
             'navigation_policy_decision_requested',
             self.on_navigation_policy_decision_requested)
+
+        webkit_main_frame = webkit_web_view.get_main_frame()
+        webkit_main_frame.connect(
+            'resource-request-starting',
+            self.on_web_frame_resource_request_starting)
+        webkit_main_frame.connect(
+            'resource-response-received',
+            self.on_web_frame_resource_response_received)
         window.show_all()
         self.window = window
         self.webkit_web_view = webkit_web_view
+        self.webkit_main_frame = webkit_main_frame
         self.base_path = base_path
 
     def route(self, path=None):
@@ -60,41 +81,69 @@ class App(object):
             webkit_web_navigation_action,
             webkit_web_policy_dicision):
         print 'navigation_policy_decision_requested'
-        url = urlparse(webkit_network_request.get_uri())
-        print url
-        if url[0] != 'app':
-            return False
-        # TODO: need more improvement about path mapping
-        # Will look for some idea from Python web framework
-        # Such as `Flask`, `CherryPy`
-        path = url.path.split('/')
-        for i in range(path.count('')):
-            path.remove('')
 
-        for key in self.registed_route.keys():
-            route = key.split('/')
-            for i in range(route.count('')):
-                route.remove('')
-            if path == route:
-                print 'Route found'
-                self.registed_route[key](self)
-                return True
-
-    def on_resource_request_starting(
+    def on_web_view_resource_request_starting(
             self,
-            webkit_web_view,
-            webkit_web_frame,
-            webkit_web_resource,
-            webkit_web_request,
-            webkit_web_response):
-        print 'Resource request starting'
+            web_view,
+            web_frame,
+            web_resource,
+            network_request,
+            network_response=None):
+        print 'web_view_resource_request_starting'
+
+    def on_web_view_resource_response_received(
+            self,
+            web_view,
+            web_frame,
+            web_resource,
+            network_response,
+            *arg, **kw):
+        print 'web_view Resource response received'
+
+    def on_web_frame_resource_request_starting(
+            self,
+            web_frame,
+            web_resource,
+            network_request,
+            network_response=None):
+        print 'web_frame_resource_request_starting'
+        url = urlparse(network_request.get_uri())
+        app_url = list()
+        if url.scheme == 'app':
+            if url.netloc == '':
+                (response, mimetype) = self.registed_route[url.path]()
+                file_ext = mimetypes.guess_extension(mimetype)
+                tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
+                f = open(tmp_file_path, 'w')
+                f.write(response)
+                f.close()
+                network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
+            elif url.netloc == 'file':
+                file_path = self.base_path + url.path
+                file_path = os.path.normcase(file_path)
+                network_request.set_uri('file://' + file_path)
+
+    def on_web_frame_resource_response_received(
+            self,
+            web_frame,
+            web_resource,
+            network_response,
+            *arg, **kw):
+        print 'web_frame Resource response received'
+        url = urlparse(network_response.get_uri())
+        url = urlparse(url.path)
+        query = parse_qs(url.query)
+        if query.has_key('tmp'):
+            print url.path
+            os.remove(url.path)
 
     def on_resource_load_finished(
             self,
-            webkit_web_view, webkit_web_frame, webkit_web_resource,
+            web_view, web_frame, web_resource,
             *args, **kw):
         print 'resource load finished'
 
     def run(self):
         self.webkit_web_view.load_uri('app:///')
         Gtk.main()
+
