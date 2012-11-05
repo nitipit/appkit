@@ -27,3 +27,6 @@ def test():
 
 app.run()
 ```
+
+![screenshot-1](https://raw.github.com/nitipit/appkit/master/doc/1.png)
+![screenshot-2](https://raw.github.com/nitipit/appkit/master/doc/2.png)
