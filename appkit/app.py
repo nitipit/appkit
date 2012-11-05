@@ -5,6 +5,7 @@ import os
 import pdb
 import tempfile
 import mimetypes
+import codecs
 
 Gtk.init('')
 
@@ -24,6 +25,7 @@ class App(object):
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
         settings.set_property('enable-developer-extras', True)
+        settings.set_property('default-encoding', 'utf-8')
         window.set_default_size(800, 600)
         scrollWindow = Gtk.ScrolledWindow()
         scrollWindow.add(webkit_web_view)
@@ -111,11 +113,11 @@ class App(object):
         app_url = list()
         if url.scheme == 'app':
             if url.netloc == '':
-                (response, mimetype) = self.registed_route[url.path]()
+                (content, mimetype, encoding) = self.registed_route[url.path]()
                 file_ext = mimetypes.guess_extension(mimetype)
                 tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
-                f = open(tmp_file_path, 'w')
-                f.write(response)
+                f = codecs.open(tmp_file_path, 'w', encoding)
+                f.write(content)
                 f.close()
                 network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
             elif url.netloc == 'file':
@@ -147,3 +149,9 @@ class App(object):
         self.webkit_web_view.load_uri('app:///')
         Gtk.main()
 
+    def request_handler():
+        pass
+
+
+def response(content=None, mimetype='text/html', encoding='utf-8'):
+    return (content, mimetype, encoding)
