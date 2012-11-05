@@ -9,7 +9,7 @@ which means we can bring web technology such as HTML5, CSS3, Javascript
 and Web browser engine to desktop.
 
 The main goal for now is to focus on library API which is inspired by [Flask](http://flask.pocoo.org/) :).  
-Application based on AppKit should be easy to write & combined with other libraries
+Application based on AppKit should be easy to write & combined with other libraries  
 ( [Bootstrap](http://twitter.github.com/bootstrap/), [AngularJS](http://angularjs.org/), [Jinja2](http://jinja.pocoo.org/docs/) or whatever that you can think of :P ) 
 ## Installation:
 Use Python `pip` command
