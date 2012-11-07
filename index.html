@@ -81,12 +81,12 @@ app = App()
 
 @app.route('/')
 def home():
-    return response('&lt;a href="app:///test/" /&gt;Link&lt;/a&gt;')
+    return '&lt;a href="app:///test/" /&gt;Link&lt;/a&gt;'
 
 
 @app.route('/test/')
 def test():
-    return response('&lt;h1&gt;Hello World&lt;/h1&gt;')
+    return ('&lt;h1&gt;Hello World&lt;/h1&gt;', 'text/html', 'utf-8')
 
 app.run()
 </code></pre>
