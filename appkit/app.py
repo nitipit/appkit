@@ -112,7 +112,11 @@ class App(object):
         url = urlparse(network_request.get_uri())
         if url.scheme == 'app':
             if url.netloc == '':
-                (content, mimetype, encoding) = self.registed_route[url.path]()
+                result = self.registed_route[url.path]()
+                # Make sure result is <tuple>
+                if isinstance(result, str):
+                    result = (result,)
+                (content, mimetype, encoding) = response(*result)
                 file_ext = mimetypes.guess_extension(mimetype)
                 tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
                 f = codecs.open(tmp_file_path, 'w', encoding)
