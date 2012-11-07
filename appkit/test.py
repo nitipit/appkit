@@ -12,6 +12,6 @@ def home():
 
 @app.route('/test/')
 def test():
-    return ('<h1>Hello World</h1>', 'application/json', 'utf-8')
+    return ('<h1>Hello World</h1>', 'text/html', 'utf-8')
 
 app.run()
