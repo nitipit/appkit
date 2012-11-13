@@ -14,7 +14,7 @@ Linux, Mac OSX, Windows
 ## Installation:
 Use Python `pip` command
 ```
-$ pip install git+https://nitipit@bitbucket.org/nitipit/appkit.git
+$ pip install git+git://github.com/nitipit/appkit.git
 ```
 
 ## Usage:
