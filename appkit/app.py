@@ -12,14 +12,6 @@ import re
 Gtk.init('')
 
 
-class UrlMappingError(Exception):
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
-
-
 class App(object):
     """App
     Application class
@@ -77,12 +69,14 @@ class App(object):
             if m:
                 match_list.append(m)
 
-        if len(match_list) == 0:
-            raise UrlMappingError('Can\'t find matched url')
-        elif len(match_list) > 1:
-            raise UrlMappingError('Found more than one matched urls')
+        if len(match_list) > 1:
+            raise Exception('Found more than one matched urls')
 
-        m = match_list[0]
+        try:
+            m = match_list[0]
+        except:
+            raise Exception('Can\'t find matched url')
+
         args = list(m.groups())
         kw = m.groupdict()
         for value in kw.values():
