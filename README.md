@@ -21,19 +21,19 @@ $ pip install git+git://github.com/nitipit/appkit.git
 ```
 #!/usr/bin/env python
 
-from appkit.app import App, response
+from appkit.app import App
 
 app = App()
 
 
 @app.route('/')
 def home():
-    return '<a href="app:///test/" />Link</a>'
+    return '<a href="app:///test/Hello/World/" />Link</a>'
 
 
-@app.route('/test/')
-def test():
-    return ('<h1>Hello World</h1>', 'text/html', 'utf-8')
+@app.route('/test/(.*)/(.*)/')
+def test(text1=None, text2=None):
+    return ('<h1>' + text1 + ' ' + text2 + '</h1>', 'text/html')
 
 app.run()
 ```

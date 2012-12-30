@@ -17,7 +17,6 @@ class App(object):
     Application class
     """
     url_pattern = dict()
-    registed_route = dict()  # for url to function mapping
     document = None  # Root DOM
 
     def __init__(self, app_path=None):
@@ -67,7 +66,12 @@ class App(object):
         for pattern in self.url_pattern:
             m = re.match(pattern, url)
             if m:
-                return self.url_pattern[pattern](*m.groups(), **m.groupdict())
+                args = list(m.groups())
+                kw = m.groupdict()
+                for value in kw.values():
+                    args.remove(value)
+
+                return self.url_pattern[pattern](*args, **kw)
 
     def route(self, pattern=None):
         def decorator(fn):
