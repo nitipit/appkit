@@ -1,11 +1,13 @@
 #!/usr/bin/env python
+# coding=utf8
 from gi.repository import Gtk, WebKit
-from urlparse import urlparse, parse_qs
+import urlparse
 import os
 import tempfile
 import mimetypes
 import codecs
 import sys
+import re
 
 Gtk.init('')
 
@@ -14,6 +16,7 @@ class App(object):
     """App
     Application class
     """
+    url_pattern = dict()
     registed_route = dict()  # for url to function mapping
     document = None  # Root DOM
 
@@ -60,9 +63,15 @@ class App(object):
         self.webkit_main_frame = webkit_main_frame
         self.app_path = app_path
 
-    def route(self, path=None):
+    def url_map_to_function(self, url):
+        for pattern in self.url_pattern:
+            m = re.match(pattern, url)
+            if m:
+                return self.url_pattern[pattern](*m.groups(), **m.groupdict())
+
+    def route(self, pattern=None):
         def decorator(fn):
-            self.registed_route[path] = fn
+            self.url_pattern[pattern] = fn
             return fn
         return decorator
 
@@ -109,17 +118,20 @@ class App(object):
             network_request,
             network_response=None):
         print 'web_frame_resource_request_starting'
-        url = urlparse(network_request.get_uri())
+        url = urlparse.unquote(network_request.get_uri())
+        url = urlparse.urlparse(url.decode('utf-8'))
         if url.scheme == 'app':
             if url.netloc == '':
-                result = self.registed_route[url.path]()
+                result = self.url_map_to_function(url.path)
                 # Make sure result is <tuple>
-                if isinstance(result, str):
+                if isinstance(result, unicode) or \
+                   isinstance(result, str):
                     result = (result,)
-                (content, mimetype, encoding) = response(*result)
+                (content, mimetype) = response(*result)
+                print type(content)
                 file_ext = mimetypes.guess_extension(mimetype)
                 tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
-                f = codecs.open(tmp_file_path, 'w', encoding)
+                f = codecs.open(tmp_file_path, 'w', encoding='utf-8')
                 f.write(content)
                 f.close()
                 network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
@@ -135,9 +147,9 @@ class App(object):
             network_response,
             *arg, **kw):
         print 'web_frame Resource response received'
-        url = urlparse(network_response.get_uri())
-        url = urlparse(url.path)
-        query = parse_qs(url.query)
+        url = urlparse.urlparse(network_response.get_uri())
+        url = urlparse.urlparse(url.path)
+        query = urlparse.parse_qs(url.query)
         if 'tmp' in query:
             print url.path
             os.remove(url.path)
@@ -159,5 +171,5 @@ class App(object):
         pass
 
 
-def response(content=None, mimetype='text/html', encoding='utf-8'):
-    return (content, mimetype, encoding)
+def response(content=None, mimetype='text/html'):
+    return (content, mimetype)
