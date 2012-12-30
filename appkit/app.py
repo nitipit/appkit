@@ -12,6 +12,14 @@ import re
 Gtk.init('')
 
 
+class UrlMappingError(Exception):
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
 class App(object):
     """App
     Application class
@@ -63,15 +71,24 @@ class App(object):
         self.app_path = app_path
 
     def url_map_to_function(self, url):
+        match_list = list()
         for pattern in self.url_pattern:
             m = re.match(pattern, url)
             if m:
-                args = list(m.groups())
-                kw = m.groupdict()
-                for value in kw.values():
-                    args.remove(value)
+                match_list.append(m)
 
-                return self.url_pattern[pattern](*args, **kw)
+        if len(match_list) == 0:
+            raise UrlMappingError('Can\'t find matched url')
+        elif len(match_list) > 1:
+            raise UrlMappingError('Found more than one matched urls')
+
+        m = match_list[0]
+        args = list(m.groups())
+        kw = m.groupdict()
+        for value in kw.values():
+            args.remove(value)
+
+        return self.url_pattern[m.re.pattern](*args, **kw)
 
     def route(self, pattern=None):
         def decorator(fn):
@@ -129,7 +146,7 @@ class App(object):
                 result = self.url_map_to_function(url.path)
                 # Make sure result is <tuple>
                 if isinstance(result, unicode) or \
-                   isinstance(result, str):
+                        isinstance(result, str):
                     result = (result,)
                 (content, mimetype) = response(*result)
                 print type(content)
