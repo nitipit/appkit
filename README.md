@@ -9,7 +9,7 @@ However, It could be compatible with Ubuntu 12.04 and so on.
 The main goal for now is to focus on library API which is inspired by [Flask](http://flask.pocoo.org/) :). Application based on AppKit should be easy to write & combined with other libraries ( [Bootstrap](http://twitter.github.com/bootstrap/), [AngularJS](http://angularjs.org/), [Jinja2](http://jinja.pocoo.org/docs/) or whatever that you can think of :P )
 
 ## Target Platforms:
-Linux, Mac OSX, Windows
+Linux
 
 ## Installation:
 Use Python `pip` command
