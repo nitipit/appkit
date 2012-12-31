@@ -38,5 +38,5 @@ def test(text1=None, text2=None):
 app.run()
 ```
 
-![screenshot-1](https://raw.github.com/nitipit/appkit/master/doc/1.png)
-![screenshot-2](https://raw.github.com/nitipit/appkit/master/doc/2.png)
+![screenshot-1](https://raw.github.com/nitipit/appkit/master/docs/1.png)
+![screenshot-2](https://raw.github.com/nitipit/appkit/master/docs/2.png)
