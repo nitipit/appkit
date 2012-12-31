@@ -43,5 +43,5 @@ example::
 
     app.run()
 
-.. image:: appkit/docs/1.png
-.. image:: appkit/docs/2.png
+.. image:: appkit/blob/master/docs/1.png
+.. image:: appkit/blob/master/docs/2.png
