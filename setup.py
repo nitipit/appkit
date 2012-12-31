@@ -15,5 +15,6 @@ setup(
     version="0.1",
     package_dir={'appkit': 'appkit'},
     packages=['appkit'],
-    package_data={'appkit': data}
+    package_data={'appkit': data},
+    install_requires=['sphinx_bootstrap_theme', ],
 )

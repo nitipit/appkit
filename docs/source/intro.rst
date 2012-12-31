@@ -1,13 +1,15 @@
-AppKit
-======
-Desktop application framework based on Webkit, HTML5, CSS3, Javascript and Python
+Introduction
+============
+.. topic:: Quote
 
-Now __AppKit__ is on it's very early state. It's developed on fedora 17 & Gnome Desktop,  
+    Desktop application framework based on Webkit, HTML5, CSS3, Javascript and Python
+
+Now **AppKit** is on it's very early state. It's developed on fedora 17 & Gnome Desktop,  
 However, It could be compatible with Ubuntu 12.04 and so on.
 
-"AppKit" will be a framework for desktop application powered by [WebKit](http://www.webkit.org/) engine, which means we can bring web technology such as HTML5, CSS3, Javascript and Web browser engine to desktop.
+"AppKit" will be a framework for desktop application powered by `WebKit <http://www.webkit.org/>`_ engine, which means we can bring web technology such as HTML5, CSS3, Javascript and Web browser engine to desktop.
 
-The main goal for now is to focus on library API which is inspired by [Flask](http://flask.pocoo.org/) :). Application based on AppKit should be easy to write & combined with other libraries ( [Bootstrap](http://twitter.github.com/bootstrap/), [AngularJS](http://angularjs.org/), [Jinja2](http://jinja.pocoo.org/docs/) or whatever that you can think of :P )
+The main goal for now is to focus on library API which is inspired by `Flask <http://flask.pocoo.org/>`_ :). Application based on AppKit should be easy to write & combined with other libraries ( `Bootstrap <http://twitter.github.com/bootstrap/>`_, `AngularJS <http://angularjs.org/>`_, `Jinja2 <http://jinja.pocoo.org/docs/>`_ or whatever that you can think of :P )
 
 Target Platforms
 ----------------
@@ -20,7 +22,9 @@ Use Python `pip` command::
     $ pip install git+git://github.com/nitipit/appkit.git
 
 
-Usage::
+Quick Start
+-----------
+example::
 
     #!/usr/bin/env python
 
@@ -40,3 +44,5 @@ Usage::
 
     app.run()
 
+.. image:: _static/readme/1.png
+.. image:: _static/readme/2.png
