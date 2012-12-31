@@ -43,5 +43,5 @@ example::
 
     app.run()
 
-.. image:: docs/1.png
-.. image:: docs/2.png
+.. image:: ./docs/1.png
+.. image:: ./docs/2.png
