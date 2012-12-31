@@ -43,5 +43,5 @@ example::
 
     app.run()
 
-.. image:: appkit/blob/master/docs/1.png
-.. image:: appkit/blob/master/docs/2.png
+.. image:: https://raw.github.com/nitipit/appkit/master/docs/1.png
+.. image:: https://raw.github.com/nitipit/appkit/master/docs/2.png
