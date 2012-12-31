@@ -1,6 +1,5 @@
-Introduction
+AppKit
 ============
-.. topic:: Quote
 
     Desktop application framework based on Webkit, HTML5, CSS3, Javascript and Python
 
