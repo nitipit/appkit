@@ -17,16 +17,15 @@ class App(object):
     Application class
     """
     url_pattern = dict()
-    document = None  # Root DOM
 
     def __init__(self, app_path=None):
-        app_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+        if app_path is None:
+            app_path = os.path.abspath(os.path.dirname(sys.argv[0]))
         window = Gtk.Window()
         window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
-        settings.set_property('enable-developer-extras', True)
         settings.set_property('default-encoding', 'utf-8')
         window.set_default_size(800, 600)
         scrollWindow = Gtk.ScrolledWindow()
@@ -62,7 +61,7 @@ class App(object):
         self.webkit_main_frame = webkit_main_frame
         self.app_path = app_path
 
-    def url_map_to_function(self, url):
+    def _url_map_to_function(self, url):
         match_list = list()
         for pattern in self.url_pattern:
             m = re.match(pattern, url)
@@ -137,13 +136,12 @@ class App(object):
         url = urlparse.urlparse(url.decode('utf-8'))
         if url.scheme == 'app':
             if url.netloc == '':
-                result = self.url_map_to_function(url.path)
+                result = self._url_map_to_function(url.path)
                 # Make sure result is <tuple>
                 if isinstance(result, unicode) or \
                         isinstance(result, str):
                     result = (result,)
                 (content, mimetype) = response(*result)
-                print type(content)
                 file_ext = mimetypes.guess_extension(mimetype)
                 tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
                 f = codecs.open(tmp_file_path, 'w', encoding='utf-8')
