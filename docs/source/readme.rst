@@ -34,7 +34,7 @@ example::
 
     @app.route('^/$')
     def home():
-        return '<a href="app:///test/Hello/World/" />Link</a>'
+        return '<a href="/test/Hello/World/" />Link</a>'
 
 
     @app.route('/test/(.+)/(.+)/')
