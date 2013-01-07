@@ -166,8 +166,13 @@ class App(object):
                 f.close()
                 network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
             else:
-                file_path = self.app_path + url.path
+                splitted_path = url.path.split('/')
+                if splitted_path[1] == 'tmp':
+                    splitted_path.pop(1)
+                url_path = os.path.join(*splitted_path)
+                file_path = os.path.join(self.app_path, url_path)
                 file_path = os.path.normcase(file_path)
+                file_path = os.path.normpath(file_path)
                 if not(os.path.exists(file_path)):
                     raise Exception('Not found: ' + file_path)
                 network_request.set_uri('file://' + file_path)
@@ -200,7 +205,14 @@ class App(object):
         print 'on_web_frame_resource_load_failed'
 
     def run(self):
-        self.webkit_web_view.load_uri('app:///')
+        index = self._url_map_to_function('/')
+        print self.app_path
+        self.webkit_web_view.load_string(
+            index,
+            mime_type='text/html',
+            encoding='utf-8',
+            base_uri='/',
+        )
         Gtk.main()
 
 
