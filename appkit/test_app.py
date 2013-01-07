@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from appkit.app import *
+from app import *
 import os
 import unittest
 

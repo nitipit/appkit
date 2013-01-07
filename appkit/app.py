@@ -78,11 +78,12 @@ class App(object):
 
         if len(match_list) > 1:
             raise Exception('Found more than one matched urls')
+            return None
 
         try:
             m = match_list[0]
         except:
-            raise Exception('Can\'t find matched url')
+            return None
 
         args = list(m.groups())
         kw = m.groupdict()
@@ -148,9 +149,11 @@ class App(object):
         print 'web_frame_resource_request_starting'
         url = urlparse.unquote(network_request.get_uri())
         url = urlparse.urlparse(url.decode('utf-8'))
-        if url.scheme == 'app':
-            if url.netloc == '':
-                result = self._url_map_to_function(url.path)
+        if url.netloc == '':
+            # Try mapping request path to function. `return` if there's no ..
+            # mapped function to perform default behavior.
+            result = self._url_map_to_function(url.path)
+            if result:
                 # Make sure result is <tuple>
                 if isinstance(result, unicode) or \
                         isinstance(result, str):
@@ -162,9 +165,11 @@ class App(object):
                 f.write(content)
                 f.close()
                 network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
-            elif url.netloc == 'file':
+            else:
                 file_path = self.app_path + url.path
                 file_path = os.path.normcase(file_path)
+                if not(os.path.exists(file_path)):
+                    raise Exception('Not found: ' + file_path)
                 network_request.set_uri('file://' + file_path)
 
     def on_web_frame_resource_response_received(
@@ -185,7 +190,6 @@ class App(object):
             web_frame,
             web_resource,
             *arg, **kw):
-
         print 'on_web_frame_resource_load_finished'
 
     def on_web_frame_resource_load_failed(
@@ -193,16 +197,17 @@ class App(object):
             web_frame,
             web_resource,
             *arg, **kw):
-
         print 'on_web_frame_resource_load_failed'
 
     def run(self):
         self.webkit_web_view.load_uri('app:///')
         Gtk.main()
 
-    def _get_app_path(self, path='.'):
-        print self.__file__
-
 
 def response(content=None, mimetype='text/html'):
+    """Make response tuple
+
+    Potential features to be added
+      - Parameters validation
+    """
     return (content, mimetype)
