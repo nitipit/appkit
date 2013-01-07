@@ -150,8 +150,8 @@ class App(object):
         url = urlparse.unquote(network_request.get_uri())
         url = urlparse.urlparse(url.decode('utf-8'))
         if url.netloc == '':
-            # Try mapping request path to function. `return` if there's no ..
-            # mapped function to perform default behavior.
+            # Try mapping request path to function. `return`.
+            # If there's no mapped function then serve it as static file.
             result = self._url_map_to_function(url.path)
             if result:
                 # Make sure result is <tuple>
