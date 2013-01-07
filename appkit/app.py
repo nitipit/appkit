@@ -26,6 +26,7 @@ class App(object):
         webkit_web_view = WebKit.WebView()
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
+        settings.set_property('enable-file-access-from-file-uris', True)
         settings.set_property('default-encoding', 'utf-8')
         window.set_default_size(800, 600)
         scrollWindow = Gtk.ScrolledWindow()
@@ -43,7 +44,7 @@ class App(object):
             self.on_web_view_resource_response_received)
         webkit_web_view.connect(
             'resource-load-finished',
-            self.on_resource_load_finished)
+            self.on_web_view_resource_load_finished)
         webkit_web_view.connect(
             'navigation_policy_decision_requested',
             self.on_navigation_policy_decision_requested)
@@ -55,6 +56,13 @@ class App(object):
         webkit_main_frame.connect(
             'resource-response-received',
             self.on_web_frame_resource_response_received)
+        webkit_main_frame.connect(
+            'resource-load-finished',
+            self.on_web_frame_resource_load_finished)
+        webkit_main_frame.connect(
+            'resource-load-failed',
+            self.on_web_frame_resource_load_failed)
+
         window.show_all()
         self.window = window
         self.webkit_web_view = webkit_web_view
@@ -123,7 +131,13 @@ class App(object):
             web_resource,
             network_response,
             *arg, **kw):
-        print 'web_view Resource response received'
+        print 'web_view_resource_response_received'
+
+    def on_web_view_resource_load_finished(
+            self,
+            web_view, web_frame, web_resource,
+            *args, **kw):
+        print 'web_view_resource_load_finished'
 
     def on_web_frame_resource_request_starting(
             self,
@@ -159,19 +173,28 @@ class App(object):
             web_resource,
             network_response,
             *arg, **kw):
-        print 'web_frame Resource response received'
+        print 'web_frame_resource_response_received'
         url = urlparse.urlparse(network_response.get_uri())
         url = urlparse.urlparse(url.path)
         query = urlparse.parse_qs(url.query)
         if 'tmp' in query:
-            print url.path
             os.remove(url.path)
 
-    def on_resource_load_finished(
+    def on_web_frame_resource_load_finished(
             self,
-            web_view, web_frame, web_resource,
-            *args, **kw):
-        print 'resource load finished'
+            web_frame,
+            web_resource,
+            *arg, **kw):
+
+        print 'on_web_frame_resource_load_finished'
+
+    def on_web_frame_resource_load_failed(
+            self,
+            web_frame,
+            web_resource,
+            *arg, **kw):
+
+        print 'on_web_frame_resource_load_failed'
 
     def run(self):
         self.webkit_web_view.load_uri('app:///')
@@ -179,9 +202,6 @@ class App(object):
 
     def _get_app_path(self, path='.'):
         print self.__file__
-
-    def request_handler():
-        pass
 
 
 def response(content=None, mimetype='text/html'):
