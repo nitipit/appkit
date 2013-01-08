@@ -12,7 +12,7 @@ for d in os.walk('appkit/'):
 
 setup(
     name='AppKit',
-    version='0.1',
+    version='0.2',
     description='Desktop application framework based on Webkit, \
         HTML5, CSS3, Javascript and Python',
     author='Nitipit Nontasuwan',
@@ -20,6 +20,7 @@ setup(
     url='http://nitipit.github.com/appkit/',
     license='MIT',
     platforms=['Linux', ],
+    keywords=['framework, html5, gnome, ui'],
     package_dir={'appkit': 'appkit'},
     packages=['appkit'],
     package_data={'appkit': data},
