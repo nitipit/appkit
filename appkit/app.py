@@ -17,6 +17,7 @@ class App(object):
     Application class
     """
     url_pattern = dict()
+    debug = False
 
     def __init__(self, app_path=None):
         if app_path is None:
@@ -105,7 +106,8 @@ class App(object):
         """
         status = webkitView.get_load_status()
         if status == status.FINISHED:
-            print 'Load finished'
+            if self.debug == True:
+                print 'Load finished'
 
     def on_navigation_policy_decision_requested(
             self,
@@ -114,7 +116,8 @@ class App(object):
             webkit_network_request,
             webkit_web_navigation_action,
             webkit_web_policy_dicision):
-        print 'navigation_policy_decision_requested'
+        if self.debug == True:
+            print 'navigation_policy_decision_requested'
 
     def on_web_view_resource_request_starting(
             self,
@@ -123,7 +126,8 @@ class App(object):
             web_resource,
             network_request,
             network_response=None):
-        print 'web_view_resource_request_starting'
+        if self.debug == True:
+            print 'web_view_resource_request_starting'
 
     def on_web_view_resource_response_received(
             self,
@@ -132,13 +136,15 @@ class App(object):
             web_resource,
             network_response,
             *arg, **kw):
-        print 'web_view_resource_response_received'
+        if self.debug == True:
+            print 'web_view_resource_response_received'
 
     def on_web_view_resource_load_finished(
             self,
             web_view, web_frame, web_resource,
             *args, **kw):
-        print 'web_view_resource_load_finished'
+        if self.debug == True:
+            print 'web_view_resource_load_finished'
 
     def on_web_frame_resource_request_starting(
             self,
@@ -146,7 +152,8 @@ class App(object):
             web_resource,
             network_request,
             network_response=None):
-        print 'web_frame_resource_request_starting'
+        if self.debug == True:
+            print 'web_frame_resource_request_starting'
         url = urlparse.unquote(network_request.get_uri())
         url = urlparse.urlparse(url.decode('utf-8'))
         if url.netloc == '':
@@ -183,7 +190,8 @@ class App(object):
             web_resource,
             network_response,
             *arg, **kw):
-        print 'web_frame_resource_response_received'
+        if self.debug == True:
+            print 'web_frame_resource_response_received'
         url = urlparse.urlparse(network_response.get_uri())
         url = urlparse.urlparse(url.path)
         query = urlparse.parse_qs(url.query)
@@ -195,18 +203,21 @@ class App(object):
             web_frame,
             web_resource,
             *arg, **kw):
-        print 'on_web_frame_resource_load_finished'
+        if self.debug == True:
+            print 'on_web_frame_resource_load_finished'
 
     def on_web_frame_resource_load_failed(
             self,
             web_frame,
             web_resource,
             *arg, **kw):
-        print 'on_web_frame_resource_load_failed'
+        if self.debug == True:
+            print 'on_web_frame_resource_load_failed'
 
     def run(self):
         index = self._url_map_to_function('/')
-        print self.app_path
+        if self.debug == True:
+            print self.app_path
         self.webkit_web_view.load_string(
             index,
             mime_type='text/html',
