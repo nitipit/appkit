@@ -47,7 +47,7 @@ example::
 .. image:: _static/readme/2.png
 
 Application using AppKit
---------------------
+------------------------
 `Markdo <https://github.com/nitipit/markdo/>`_ is a Gnome Application that use AppKit to make Gnome Application
 
 .. image:: https://raw.github.com/nitipit/markdo/master/doc/fedora-screenshot.png

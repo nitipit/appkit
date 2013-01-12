@@ -7,7 +7,7 @@ import unittest
 
 class AppKitUnitTest(unittest.TestCase):
     def setUp(self):
-        app = App()
+        app = App(__file__)
 
         @app.route('^/$')
         def home():
