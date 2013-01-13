@@ -173,7 +173,17 @@ class App(object):
                 f.close()
                 network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
             else:
-                splitted_path = url.path.split('/')
+                # A bit hack about request url
+                # Remove self.app_path string from url
+                # This case happen if resource is called by static files
+                # in relative path format ('./<path>')
+                # for ex. images called by CSS.
+                url_path = re.sub(self.app_path, '', url.path)
+
+                # Remove /tmp/ path from url
+                # This case happen with the file which was opened directly
+                # from controller.
+                splitted_path = url_path.split('/')
                 if splitted_path[1] == 'tmp':
                     splitted_path.pop(1)
                 url_path = os.path.join(*splitted_path)
