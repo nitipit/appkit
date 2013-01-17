@@ -19,9 +19,8 @@ class App(object):
     url_pattern = dict()
     debug = False
 
-    def __init__(self, app_path=None):
-        if app_path is None:
-            app_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+    def __init__(self, module_path=None):
+        app_path = os.path.abspath(os.path.dirname(module_path))
         window = Gtk.Window()
         window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
