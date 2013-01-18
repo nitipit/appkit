@@ -6,8 +6,8 @@ import os
 import tempfile
 import mimetypes
 import codecs
-import sys
 import re
+import lxml.html
 
 Gtk.init('')
 
@@ -224,11 +224,17 @@ class App(object):
             print 'on_web_frame_resource_load_failed'
 
     def run(self):
-        index = self._url_map_to_function('/')
+        html = self._url_map_to_function('/')
+        try:
+            dom = lxml.html.document_fromstring(html)
+            self.window.set_title(dom.head.find('title').text)
+        except:
+            print 'Can\'t find document <title>'
+
         if self.debug is True:
             print self.app_path
         self.webkit_web_view.load_string(
-            index,
+            html,
             mime_type='text/html',
             encoding='utf-8',
             base_uri='/',
