@@ -116,7 +116,7 @@ class App(object):
             webkit_web_navigation_action,
             webkit_web_policy_dicision):
         if self.debug is True:
-            print 'navigation_policy_decision_requested'
+            print 'on_navigation_policy_decision_requested'
 
     def on_web_view_resource_request_starting(
             self,
@@ -126,7 +126,7 @@ class App(object):
             network_request,
             network_response=None):
         if self.debug is True:
-            print 'web_view_resource_request_starting'
+            print 'on_web_view_resource_request_starting'
 
     def on_web_view_resource_response_received(
             self,
@@ -136,14 +136,14 @@ class App(object):
             network_response,
             *arg, **kw):
         if self.debug is True:
-            print 'web_view_resource_response_received'
+            print 'on_web_view_resource_response_received'
 
     def on_web_view_resource_load_finished(
             self,
             web_view, web_frame, web_resource,
             *args, **kw):
         if self.debug is True:
-            print 'web_view_resource_load_finished'
+            print 'on_web_view_resource_load_finished'
 
     def on_web_frame_resource_request_starting(
             self,
@@ -152,7 +152,7 @@ class App(object):
             network_request,
             network_response=None):
         if self.debug is True:
-            print 'web_frame_resource_request_starting'
+            print 'on_web_frame_resource_request_starting'
         url = urlparse.unquote(network_request.get_uri())
         url = urlparse.urlparse(url.decode('utf-8'))
         if url.netloc == '':
@@ -200,7 +200,7 @@ class App(object):
             network_response,
             *arg, **kw):
         if self.debug is True:
-            print 'web_frame_resource_response_received'
+            print 'on_web_frame_resource_response_received'
         url = urlparse.urlparse(network_response.get_uri())
         url = urlparse.urlparse(url.path)
         query = urlparse.parse_qs(url.query)
@@ -233,6 +233,8 @@ class App(object):
 
         if self.debug is True:
             print self.app_path
+
+        # Use load_string instead of load_uri because it shows warning.
         self.webkit_web_view.load_string(
             html,
             mime_type='text/html',
