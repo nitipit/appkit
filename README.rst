@@ -29,7 +29,7 @@ example::
 
     from appkit.app import App
 
-    app = App()
+    app = App(__file__)
 
 
     @app.route('^/$')
