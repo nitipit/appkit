@@ -158,13 +158,9 @@ class App(object):
         if url.netloc == '':
             # Try mapping request path to function. `return`.
             # If there's no mapped function then serve it as static file.
-            result = self._url_map_to_function(url.path)
-            if result:
-                # Make sure result is <tuple>
-                if isinstance(result, unicode) or \
-                        isinstance(result, str):
-                    result = (result,)
-                (content, mimetype) = response(*result)
+            response = make_response(self._url_map_to_function(url.path))
+            if response:
+                (content, mimetype) = response
                 file_ext = mimetypes.guess_extension(mimetype)
                 tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
                 f = codecs.open(tmp_file_path, 'w', encoding='utf-8')
@@ -224,12 +220,7 @@ class App(object):
             print 'on_web_frame_resource_load_failed'
 
     def run(self):
-        result = self._url_map_to_function('/')
-        if isinstance(result, unicode) or \
-                isinstance(result, str):
-            result = (result,)
-
-        (content, mimetype) = response(*result)
+        (content, mimetype) = make_response(self._url_map_to_function('/'))
         try:
             dom = lxml.html.document_fromstring(content)
             self.window.set_title(dom.head.find('title').text)
@@ -249,10 +240,14 @@ class App(object):
         Gtk.main()
 
 
-def response(content=None, mimetype='text/html'):
+def make_response(response):
     """Make response tuple
 
     Potential features to be added
       - Parameters validation
     """
-    return (content, mimetype)
+    if isinstance(response, unicode) or \
+            isinstance(response, str):
+        response = (response, 'text/html')
+
+    return response
