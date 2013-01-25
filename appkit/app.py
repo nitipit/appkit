@@ -224,9 +224,14 @@ class App(object):
             print 'on_web_frame_resource_load_failed'
 
     def run(self):
-        html = self._url_map_to_function('/')
+        result = self._url_map_to_function('/')
+        if isinstance(result, unicode) or \
+                isinstance(result, str):
+            result = (result,)
+
+        (content, mimetype) = response(*result)
         try:
-            dom = lxml.html.document_fromstring(html)
+            dom = lxml.html.document_fromstring(content)
             self.window.set_title(dom.head.find('title').text)
         except:
             print 'Can\'t find document <title>'
@@ -236,8 +241,8 @@ class App(object):
 
         # Use load_string instead of load_uri because it shows warning.
         self.webkit_web_view.load_string(
-            html,
-            mime_type='text/html',
+            content,
+            mime_type=mimetype,
             encoding='utf-8',
             base_uri='/',
         )
