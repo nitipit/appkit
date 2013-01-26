@@ -1,6 +1,7 @@
-from appkit.app import App
+#!/usr/bin/env python
+from appkit import App
 
-app = App()
+app = App(__file__)
 
 
 @app.route('/$')
