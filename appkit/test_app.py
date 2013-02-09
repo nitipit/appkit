@@ -13,6 +13,15 @@ class AppKitUnitTest(unittest.TestCase):
         def home():
             return 'hi'
 
+        @app.route('/sum/(.+)/(.+)/')
+        def sum(arg1, arg2):
+            return int(arg1) + int(arg2)
+
+        @app.route('/greeting/(?P<greeting>.+)/(?P<name>.+)/')
+        def greeting(*args, **kw):
+            print kw['greeting'] + ' ' + kw['name']
+
+
         self.app = app
 
     def test_init_gtk(self):
@@ -33,6 +42,8 @@ class AppKitUnitTest(unittest.TestCase):
 
     def test__url_map_to_function(self):
         self.assertEqual(self.app._url_map_to_function('/'), 'hi')
+        self.assertEqual(self.app._url_map_to_function('/sum/1/2/'), 3)
+        self.app._url_map_to_function('/greeting/Hello/Gnome/')
 
 
 if __name__ == '__main__':
