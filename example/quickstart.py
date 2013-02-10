@@ -1,22 +1,17 @@
 #!/usr/bin/env python
-from appkit import App
+
+from appkit.app import App
 
 app = App(__file__)
 
 
 @app.route('^/$')
 def home():
-    return '<a href="/sum/1/2/">sum</a>' + \
-        '<br /> <a href="/greeting/Hello/Gnome/">greeting</a>'
+    return '<a href="/test/Hello/World/" />Link</a>'
 
 
-@app.route('/sum/(.+)/(.+)/')
-def sum(arg1, arg2):
-    return unicode(int(arg1) + int(arg2))
-
-
-@app.route('/greeting/(?P<greeting>.+)/(?P<name>.+)/')
-def greeting(*args, **kw):
-    return kw['greeting'] + ' ' + kw['name']
+@app.route('/test/(.+)/(.+)/')
+def test(text1=None, text2=None):
+    return ('<h1>' + text1 + ' ' + text2 + '</h1>', 'text/html')
 
 app.run()

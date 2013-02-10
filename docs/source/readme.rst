@@ -3,7 +3,7 @@ AppKit
 
     Desktop application framework based on Webkit, HTML5, CSS3, Javascript and Python
 
-Now **AppKit** is on it's very early state. It's developed on fedora 17 & Gnome Desktop,  
+Now **AppKit** is on it's very early state. It's developed on fedora 18 & Gnome Desktop,  
 However, It could be compatible with Ubuntu 12.04 and so on.
 
 "AppKit" will be a framework for desktop application powered by `WebKit <http://www.webkit.org/>`_ engine, which means we can bring web technology such as HTML5, CSS3, Javascript and Web browser engine to desktop.
@@ -16,10 +16,18 @@ Linux
 
 Installation
 ------------
+
+Github
+~~~~~~
 Use Python `pip` command::
 
     $ pip install git+git://github.com/nitipit/appkit.git
 
+PyPI
+~~~~
+::
+
+    $ pip install appkit
 
 Quick Start
 -----------
@@ -29,7 +37,7 @@ example::
 
     from appkit.app import App
 
-    app = App()
+    app = App(__file__)
 
 
     @app.route('^/$')

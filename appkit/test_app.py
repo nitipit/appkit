@@ -21,7 +21,6 @@ class AppKitUnitTest(unittest.TestCase):
         def greeting(*args, **kw):
             print kw['greeting'] + ' ' + kw['name']
 
-
         self.app = app
 
     def test_init_gtk(self):
