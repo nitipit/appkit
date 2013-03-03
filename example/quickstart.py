@@ -7,7 +7,16 @@ app = App(__file__)
 
 @app.route('^/$')
 def home():
-    return '<a href="/test/Hello/World/" />Link</a>'
+    return '''
+        <html>
+        <head>
+        <title>Quick Start</title>
+        </head>
+        <body>
+        <a href="/test/Hello/World/">Link</a>
+        </body>
+        </html>
+        '''
 
 
 @app.route('/test/(.+)/(.+)/')

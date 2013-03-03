@@ -7,7 +7,7 @@ import tempfile
 import mimetypes
 import codecs
 import re
-import lxml.html
+from xml.etree import ElementTree
 
 Gtk.init('')
 
@@ -222,10 +222,10 @@ class App(object):
     def run(self):
         (content, mimetype) = make_response(self._url_map_to_function('/'))
         try:
-            dom = lxml.html.document_fromstring(content)
-            self.window.set_title(dom.head.find('title').text)
+            dom = ElementTree.fromstring(content)
+            self.window.set_title(dom.find('.//title').text)
         except:
-            print 'Can\'t find document <title>'
+            pass
 
         if self.debug is True:
             print self.app_path

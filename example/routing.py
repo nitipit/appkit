@@ -6,8 +6,17 @@ app = App(__file__)
 
 @app.route('^/$')
 def home():
-    return '<a href="/sum/1/2/">sum</a>' + \
-        '<br /> <a href="/greeting/Hello/Gnome/">greeting</a>'
+    return '''
+        <html>
+        <head>
+        <title>Routing</title>
+        </head>
+        <body>
+        <a href="/sum/1/2/">sum</a>
+        <br /> <a href="/greeting/Hello/Gnome/">greeting</a>
+        </body>
+        </html>
+        '''
 
 
 @app.route('/sum/(.+)/(.+)/')
