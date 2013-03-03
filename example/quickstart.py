@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-
-from appkit.app import App
+from appkit import App
 
 app = App(__file__)
 
