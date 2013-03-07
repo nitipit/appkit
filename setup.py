@@ -13,8 +13,8 @@ for d in os.walk('appkit/'):
 setup(
     name='AppKit',
     version='0.2.3',
-    description='Desktop application framework based on Webkit, \
-        HTML5, CSS3, Javascript and Python',
+    description='Desktop application framework based on Webkit' +\
+        ' HTML5, CSS3, Javascript and Python',
     author='Nitipit Nontasuwan',
     author_email='nitipit@gmail.com',
     url='http://nitipit.github.com/appkit/',
