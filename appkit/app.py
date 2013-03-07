@@ -20,7 +20,7 @@ class App(object):
     debug = False
 
     def __init__(self, module_path=None):
-        app_path = os.path.abspath(os.path.dirname(module_path))
+        app_dir = os.path.abspath(os.path.dirname(module_path))
         window = Gtk.Window()
         window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
@@ -67,7 +67,7 @@ class App(object):
         self.window = window
         self.webkit_web_view = webkit_web_view
         self.webkit_main_frame = webkit_main_frame
-        self.app_path = app_path
+        self.app_dir = app_dir
 
     def _url_map_to_function(self, url):
         match_list = list()
@@ -169,11 +169,11 @@ class App(object):
                 network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
             else:
                 # A bit hack about request url
-                # Remove self.app_path string from url
+                # Remove self.app_dir string from url
                 # This case happen if resource is called by static files
                 # in relative path format ('./<path>')
                 # for ex. images called by CSS.
-                url_path = re.sub(self.app_path, '', url.path)
+                url_path = re.sub(self.app_dir, '', url.path)
 
                 # Remove /tmp/ path from url
                 # This case happen with the file which was opened directly
@@ -182,7 +182,7 @@ class App(object):
                 if splitted_path[1] == 'tmp':
                     splitted_path.pop(1)
                 url_path = os.path.join(*splitted_path)
-                file_path = os.path.join(self.app_path, url_path)
+                file_path = os.path.join(self.app_dir, url_path)
                 file_path = os.path.normcase(file_path)
                 file_path = os.path.normpath(file_path)
                 if not(os.path.exists(file_path)):
@@ -228,7 +228,7 @@ class App(object):
             pass
 
         if self.debug is True:
-            print self.app_path
+            print self.app_dir
 
         # Use load_string instead of load_uri because it shows warning.
         self.webkit_web_view.load_string(
