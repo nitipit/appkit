@@ -12,15 +12,15 @@ Linux
 Installation
 ------------
 
-PyPI (Release version)
+Option 1: From PyPI (Release version)
 ~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
     $ pip install appkit
 
-Git
-~~~~~~~~~~~
+Option 2: From Git
+~~~~~~~~~~~~~~~~~~
 ::
 
     $ pip install git+git://github.com/nitipit/appkit.git
@@ -28,7 +28,7 @@ Git
 
 Quick Start
 -----------
-example::
+::
 
     #!/usr/bin/env python
 
