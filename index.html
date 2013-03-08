@@ -49,39 +49,45 @@
         <h1>AppKit</h1>
 
 <blockquote>
-<p>Desktop application framework based on Webkit, HTML5, CSS3, Javascript and Python</p>
+<p>Gnome desktop application framework based on Webkit, HTML5, CSS3,
+Javascript and Python</p>
 </blockquote>
 
-<p>Now <strong>AppKit</strong> is on it's very early state. It's developed on fedora 17 &amp; Gnome Desktop,<br>
-However, It could be compatible with Ubuntu 12.04 and so on.</p>
+<p>"AppKit" will be a framework for gnome desktop application powered by
+<a href="http://www.webkit.org/">WebKit</a> engine, which means we can bring web
+technology such as HTML5, CSS3, Javascript and Web browser engine to
+desktop.</p>
 
-<p>"AppKit" will be a framework for desktop application powered by <a href="http://www.webkit.org/">WebKit</a> engine, which means we can bring web technology such as HTML5, CSS3, Javascript and Web browser engine to desktop.</p>
-
-<p>The main goal for now is to focus on library API which is inspired by <a href="http://flask.pocoo.org/">Flask</a> :). Application based on AppKit should be easy to write &amp; combined with other libraries ( <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>, <a href="http://angularjs.org/">AngularJS</a>, <a href="http://jinja.pocoo.org/docs/">Jinja2</a> or whatever that you can think of :P )</p>
-
-<h2>Target Platforms:</h2>
+<h2>Target Platforms</h2>
 
 <p>Linux</p>
 
-<h2>Installation:</h2>
+<h2>Installation</h2>
 
-<p>Use Python <code>pip</code> command</p>
+<h3>PyPI (Release version)</h3>
+
+<pre><code>$ pip install appkit
+</code></pre>
+
+<h3>Git</h3>
 
 <pre><code>$ pip install git+git://github.com/nitipit/appkit.git
 </code></pre>
 
-<h2>Usage:</h2>
+<h2>Quick Start</h2>
+
+<p>example:</p>
 
 <pre><code>#!/usr/bin/env python
 
-from appkit.app import App
+from appkit.api.v0_2_4 import App
 
-app = App()
+app = App(__file__)
 
 
 @app.route('^/$')
 def home():
-    return '&lt;a href="app:///test/Hello/World/" /&gt;Link&lt;/a&gt;'
+    return '&lt;a href="/test/Hello/World/" /&gt;Link&lt;/a&gt;'
 
 
 @app.route('/test/(.+)/(.+)/')
@@ -91,7 +97,7 @@ def test(text1=None, text2=None):
 app.run()
 </code></pre>
 
-<p><img src="https://raw.github.com/nitipit/appkit/master/docs/1.png" alt="screenshot-1"><img src="https://raw.github.com/nitipit/appkit/master/docs/2.png" alt="screenshot-2"></p>
+<p><img src="https://raw.github.com/nitipit/appkit/master/docs/1.png" alt="image"><img src="https://raw.github.com/nitipit/appkit/master/docs/2.png" alt="image"></p>
       </section>
 
       <footer>
