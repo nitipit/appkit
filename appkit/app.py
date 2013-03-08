@@ -7,7 +7,7 @@ import tempfile
 import mimetypes
 import codecs
 import re
-from xml.etree import ElementTree
+from bs4 import BeautifulSoup
 
 Gtk.init('')
 
@@ -219,11 +219,15 @@ class App(object):
         if self.debug is True:
             print 'on_web_frame_resource_load_failed'
 
-    def run(self):
+    def _init_ui(self):
+        """Initial the first UI page.
+        - load html from '/' endpoint
+        - if <title> is defined, use as windows title
+        """
         (content, mimetype) = make_response(self._url_map_to_function('/'))
         try:
-            dom = ElementTree.fromstring(content)
-            self.window.set_title(dom.find('.//title').text)
+            beautifulsoup = BeautifulSoup(content)
+            self.window.set_title(beautifulsoup.find('title').string)
         except:
             pass
 
@@ -237,6 +241,9 @@ class App(object):
             encoding='utf-8',
             base_uri='/',
         )
+
+    def run(self):
+        self._init_ui()
         Gtk.main()
 
 
