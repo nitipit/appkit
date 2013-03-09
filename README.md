@@ -9,6 +9,11 @@ AppKit
 technology such as HTML5, CSS3, Javascript and Web browser engine to
 desktop.
 
+Full Documentation
+------------------
+
+[https://appkit.readthedocs.org/en/latest](https://appkit.readthedocs.org/en/latest)/
+
 Target Platforms
 ----------------
 
@@ -17,18 +22,17 @@ Linux
 Installation
 ------------
 
-### PyPI (Release version)
+Option 1: From PyPI (Release version)
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~
 
     $ pip install appkit
 
-### Git
+### Option 2: From Git
 
     $ pip install git+git://github.com/nitipit/appkit.git
 
 Quick Start
 -----------
-
-example:
 
     #!/usr/bin/env python
 

@@ -5,6 +5,11 @@ AppKit
 
 "AppKit" will be a framework for gnome desktop application powered by `WebKit <http://www.webkit.org/>`_ engine, which means we can bring web technology such as HTML5, CSS3, Javascript and Web browser engine to desktop.
 
+
+Full Documentation
+------------------
+https://appkit.readthedocs.org/en/latest/
+
 Target Platforms
 ----------------
 Linux
