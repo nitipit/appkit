@@ -22,8 +22,7 @@ Linux
 Installation
 ------------
 
-Option 1: From PyPI (Release version)
-\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~
+### Option 1: From PyPI (Release version)
 
     $ pip install appkit
 
