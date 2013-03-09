@@ -3,16 +3,28 @@ Tutorial
 
 What AppKit do, really
 ----------------------
-The main task for ``AppKit`` is to make HTML5 which is rendered on Webkit interact smoothly with Python which is better at dealing with desktop environment
+The main task for ``AppKit`` is to make HTML5 on Webkit interact smoothly with Python which is better at dealing with desktop environment
 
 The smallest application with HTML5
 -----------------------------------
+
+
+Directory structure
+~~~~~~~~~~~~~~~~~~~
+::
+
+    quickstart/
+    |-- quickstart.py
+    `-- ui.html
+
+
 User interface with HTML5
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+ui.html
+
 
 .. code-block:: html
 
-    #ui.html
     <html>
     <head><title>AppKit</title></head>
     <body>
@@ -23,10 +35,11 @@ User interface with HTML5
 
 Initialize application by Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+quickstart.py
+
 
 .. code-block:: python
 
-    #app.py
     from appkit.api.v0_2_4 import App
     import codecs
     
