@@ -10,6 +10,12 @@ for d in os.walk('appkit/'):
         )
         data.extend(path_list)
 
+#if subprocess.call(['python', '-m', 'unittest', 'discover', '-v']):
+#    print('================================================================')
+#    print('AppKit doesn\'t pass test in your environment')
+#    print('Some functionallity might not work correctly')
+#    print('================================================================')
+
 setup(
     name='AppKit',
     version='0.2.3',
