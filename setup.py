@@ -1,7 +1,6 @@
 from distutils.core import setup
 import os
-import appkit
-import subprocess
+from appkit import __version__
 
 data = list()
 for d in os.walk('appkit/'):
@@ -12,15 +11,9 @@ for d in os.walk('appkit/'):
         )
         data.extend(path_list)
 
-if subprocess.call(['python', '-m', 'unittest', 'discover', '-v']):
-    print('================================================================')
-    print('AppKit doesn\'t pass test in your environment')
-    print('Some functionallity might not work correctly')
-    print('================================================================')
-
 setup(
     name='AppKit',
-    version=appkit.__version__,
+    version=__version__,
     description='Desktop application framework based on Webkit' +
     ' HTML5, CSS3, Javascript and Python',
     author='Nitipit Nontasuwan',
