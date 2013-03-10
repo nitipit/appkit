@@ -1,5 +1,6 @@
 from distutils.core import setup
 import os
+import appkit
 
 data = list()
 for d in os.walk('appkit/'):
@@ -18,9 +19,9 @@ for d in os.walk('appkit/'):
 
 setup(
     name='AppKit',
-    version='0.2.3',
+    version=appkit.__version__,
     description='Desktop application framework based on Webkit' +
-            ' HTML5, CSS3, Javascript and Python',
+    ' HTML5, CSS3, Javascript and Python',
     author='Nitipit Nontasuwan',
     author_email='nitipit@gmail.com',
     url='http://nitipit.github.com/appkit/',
