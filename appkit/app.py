@@ -8,6 +8,7 @@ import mimetypes
 import codecs
 import re
 from bs4 import BeautifulSoup
+import sys
 
 Gtk.init('')
 
@@ -244,7 +245,7 @@ class App(object):
 
     def run(self):
         self._init_ui()
-        Gtk.main()
+        sys.exit(Gtk.main())
 
 
 def make_response(response):
