@@ -246,7 +246,7 @@ class App(object):
         sys.exit(Gtk.main())
 
 
-def make_response(data=u''):
+def make_response(data=(u'', 'text/html')):
     """Make response tuple
 
     Potential features to be added
