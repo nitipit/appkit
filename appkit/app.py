@@ -177,8 +177,6 @@ class App(object):
                 url_path = re.sub(self.app_dir, '', url.path)
 
                 # Remove /tmp/ path from url
-                # This case happen with the file which was opened directly
-                # from controller.
                 splitted_path = url_path.split('/')
                 if splitted_path[1] == 'tmp':
                     splitted_path.pop(1)
