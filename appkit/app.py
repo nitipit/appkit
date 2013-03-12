@@ -159,9 +159,9 @@ class App(object):
         if url.netloc == '':
             # Try mapping request path to function. `return`.
             # If there's no mapped function then serve it as static file.
-            response = make_response(self._url_map_to_function(url.path))
+            response = self._url_map_to_function(url.path)
             if response:
-                (content, mimetype) = response
+                (content, mimetype) = make_response(response)
                 file_ext = mimetypes.guess_extension(mimetype)
                 tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
                 f = codecs.open(tmp_file_path, 'w', encoding='utf-8')
@@ -246,14 +246,15 @@ class App(object):
         sys.exit(Gtk.main())
 
 
-def make_response(response):
+def make_response(data=u''):
     """Make response tuple
 
     Potential features to be added
       - Parameters validation
     """
-    if isinstance(response, unicode) or \
-            isinstance(response, str):
-        response = (response, 'text/html')
+    if isinstance(data, tuple):
+        return data
 
-    return response
+    if not(isinstance(data, unicode)):
+        data = unicode(data)
+        return (data, 'text/html')
