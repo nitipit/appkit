@@ -223,7 +223,7 @@ class App(object):
         - load html from '/' endpoint
         - if <title> is defined, use as windows title
         """
-        (content, mimetype) = make_response(self._url_map_to_function('/'))
+        (content, mimetype) = make_response('hi')
         try:
             beautifulsoup = BeautifulSoup(content)
             self.window.set_title(beautifulsoup.find('title').string)
@@ -252,9 +252,11 @@ def make_response(data=(u'', 'text/html')):
     Potential features to be added
       - Parameters validation
     """
+
     if isinstance(data, tuple):
         return data
 
     if not(isinstance(data, unicode)):
         data = unicode(data)
-        return (data, 'text/html')
+
+    return (data, 'text/html')
