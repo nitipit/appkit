@@ -256,7 +256,8 @@ def make_response(data=(u'', 'text/html')):
     if isinstance(data, tuple):
         return data
 
-    if not(isinstance(data, unicode)):
+    if not(type(data) == 'unicode'):
         data = unicode(data)
-
-    return (data, 'text/html')
+        return (data, 'text/html')
+    else:
+        raise Exception('Expect unicode string')
