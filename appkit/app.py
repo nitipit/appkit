@@ -223,7 +223,7 @@ class App(object):
         - load html from '/' endpoint
         - if <title> is defined, use as windows title
         """
-        (content, mimetype) = make_response('hi')
+        (content, mimetype) = make_response(self._url_map_to_function('/'))
         try:
             beautifulsoup = BeautifulSoup(content)
             self.window.set_title(beautifulsoup.find('title').string)
