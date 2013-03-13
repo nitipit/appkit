@@ -176,6 +176,9 @@ class App(object):
                 # for ex. images called by CSS.
                 url_path = re.sub(self.app_dir, '', url.path)
 
+                # Remove query parameter from static file request
+                url_path = re.sub('\?.*$', '', url_path)
+
                 # Remove /tmp/ path from url
                 splitted_path = url_path.split('/')
                 if splitted_path[1] == 'tmp':
