@@ -127,6 +127,7 @@ class App(object):
             network_request,
             network_response=None):
         if self.debug is True:
+            print network_request.get_uri()
             print 'on_web_view_resource_request_starting'
 
     def on_web_view_resource_response_received(
