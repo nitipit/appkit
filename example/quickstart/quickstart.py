@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 from appkit.api.v0_2_4 import App
-import codecs
 
-app = App(__file__)
+app = App(__name__)
 
 
-@app.route('^/$')
+@app.server.route('/')
 def index():
-    html = codecs.open('ui.html', 'r', encoding='utf8').read()
-    return html
+    return '<a href="/test/">hello</a>'
 
 
-@app.route('/test/(.+)/(.+)/')
-def test(text1=None, text2=None):
-    return ('<h1>' + text1 + ' ' + text2 + '</h1>', 'text/html')
+@app.server.route('/test/')
+def test():
+    return 'test'
 
 app.run()

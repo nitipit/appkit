@@ -1,39 +1,30 @@
 #!/usr/bin/env python
 # coding=utf8
 from gi.repository import Gtk, WebKit
-import urlparse
-import os
-import tempfile
-import mimetypes
-import codecs
-import re
-from bs4 import BeautifulSoup
 import sys
+from multiprocessing import Process
+from flask import Flask
+import socket
+import urllib2
 
 Gtk.init('')
 
 
-class App(object):
-    """App
-    Application class
-    """
-    url_pattern = dict()
-    debug = False
-
-    def __init__(self, module_path=None):
-        app_dir = os.path.abspath(os.path.dirname(module_path))
-        window = Gtk.Window()
-        window.set_title('AppKit')
+class UI(object):
+    def __init__(self, debug=False):
+        self.debug = debug
+        gtk_window = Gtk.Window()
+        gtk_window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
         settings.set_property('enable-file-access-from-file-uris', True)
         settings.set_property('default-encoding', 'utf-8')
-        window.set_default_size(800, 600)
+        gtk_window.set_default_size(800, 600)
         scrollWindow = Gtk.ScrolledWindow()
         scrollWindow.add(webkit_web_view)
-        window.add(scrollWindow)
-        window.connect('destroy', Gtk.main_quit)
+        gtk_window.add(scrollWindow)
+        gtk_window.connect('destroy', Gtk.main_quit)
         webkit_web_view.connect(
             'notify::load-status',
             self.on_notify_load_status)
@@ -64,40 +55,10 @@ class App(object):
             'resource-load-failed',
             self.on_web_frame_resource_load_failed)
 
-        window.show_all()
-        self.window = window
+        gtk_window.show_all()
+        self.gtk_window = gtk_window
         self.webkit_web_view = webkit_web_view
         self.webkit_main_frame = webkit_main_frame
-        self.app_dir = app_dir
-
-    def _url_map_to_function(self, url):
-        match_list = list()
-        for pattern in self.url_pattern:
-            m = re.match(pattern, url)
-            if m:
-                match_list.append(m)
-
-        if len(match_list) > 1:
-            raise Exception('Found more than one matched urls')
-            return None
-
-        try:
-            m = match_list[0]
-        except:
-            return None
-
-        args = list(m.groups())
-        kw = m.groupdict()
-        for value in kw.values():
-            args.remove(value)
-
-        return self.url_pattern[m.re.pattern](*args, **kw)
-
-    def route(self, pattern=None):
-        def decorator(fn):
-            self.url_pattern[pattern] = fn
-            return fn
-        return decorator
 
     def on_notify_load_status(self, webkitView, *args, **kwargs):
         """Callback function when the page was loaded completely
@@ -155,42 +116,6 @@ class App(object):
             network_response=None):
         if self.debug is True:
             print 'on_web_frame_resource_request_starting'
-        url = urlparse.unquote(network_request.get_uri())
-        url = urlparse.urlparse(url.decode('utf-8'))
-        if url.netloc == '':
-            # Try mapping request path to function. `return`.
-            # If there's no mapped function then serve it as static file.
-            response = self._url_map_to_function(url.path)
-            if response:
-                (content, mimetype) = make_response(response)
-                file_ext = mimetypes.guess_extension(mimetype)
-                tmp_file_path = tempfile.mkstemp(suffix=file_ext)[1]
-                f = codecs.open(tmp_file_path, 'w', encoding='utf-8')
-                f.write(content)
-                f.close()
-                network_request.set_uri('file://' + tmp_file_path + '?tmp=1')
-            else:
-                # A bit hack about request url
-                # Remove self.app_dir string from url
-                # This case happen if resource is called by static files
-                # in relative path format ('./<path>')
-                # for ex. images called by CSS.
-                url_path = re.sub(self.app_dir, '', url.path)
-
-                # Remove query parameter from static file request
-                url_path = re.sub('\?.*$', '', url_path)
-
-                # Remove /tmp/ path from url
-                splitted_path = url_path.split('/')
-                if splitted_path[1] == 'tmp':
-                    splitted_path.pop(1)
-                url_path = os.path.join(*splitted_path)
-                file_path = os.path.join(self.app_dir, url_path)
-                file_path = os.path.normcase(file_path)
-                file_path = os.path.normpath(file_path)
-                if not(os.path.exists(file_path)):
-                    raise Exception('Not found: ' + file_path)
-                network_request.set_uri('file://' + file_path)
 
     def on_web_frame_resource_response_received(
             self,
@@ -200,11 +125,6 @@ class App(object):
             *arg, **kw):
         if self.debug is True:
             print 'on_web_frame_resource_response_received'
-        url = urlparse.urlparse(network_response.get_uri())
-        url = urlparse.urlparse(url.path)
-        query = urlparse.parse_qs(url.query)
-        if 'tmp' in query:
-            os.remove(url.path)
 
     def on_web_frame_resource_load_finished(
             self,
@@ -222,46 +142,35 @@ class App(object):
         if self.debug is True:
             print 'on_web_frame_resource_load_failed'
 
-    def _init_ui(self):
-        """Initial the first UI page.
-        - load html from '/' endpoint
-        - if <title> is defined, use as windows title
-        """
-        (content, mimetype) = make_response(self._url_map_to_function('/'))
-        try:
-            beautifulsoup = BeautifulSoup(content)
-            self.window.set_title(beautifulsoup.find('title').string)
-        except:
-            pass
 
-        if self.debug is True:
-            print self.app_dir
-
-        # Use load_string instead of load_uri because it shows warning.
-        self.webkit_web_view.load_string(
-            content,
-            mime_type=mimetype,
-            encoding='utf-8',
-            base_uri='/',
-        )
-
-    def run(self):
-        self._init_ui()
-        sys.exit(Gtk.main())
-
-
-def make_response(data=(u'', 'text/html')):
-    """Make response tuple
-
-    Potential features to be added
-      - Parameters validation
+class App(object):
+    """App
+    Application class
     """
 
-    if isinstance(data, tuple):
-        return data
+    def __init__(self, module_name=None):
+        self.ui = UI()
+        self.server = Flask(module_name)
 
-    if not(type(data) == 'unicode'):
-        data = unicode(data)
-        return (data, 'text/html')
-    else:
-        raise Exception('Expect unicode string')
+    def run(self):
+        # Start web server
+        sock = socket.socket()
+        sock.bind(('localhost', 0))
+        port = sock.getsockname()[1]
+        sock.close()
+        self.port = str(port)
+        p = Process(
+            target=self.server.run,
+            args=('localhost', port,),
+        )
+        p.daemon = True
+        p.start()
+        while True:
+            try:
+                urllib2.urlopen('http://localhost:' + self.port)
+                break
+            except:
+                pass
+
+        self.ui.webkit_web_view.load_uri('http://localhost:' + self.port)
+        sys.exit(Gtk.main())
