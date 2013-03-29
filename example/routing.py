@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-from appkit import App
+from appkit.api.v0_2_6 import App
 
-app = App(__file__)
+app = App(__name__)
 
 
-@app.route('^/$')
+@app.route('/')
 def home():
     return '''
         <html>
@@ -19,13 +19,13 @@ def home():
         '''
 
 
-@app.route('/sum/(.+)/(.+)/')
+@app.route('/sum/<arg1>/<arg2>/')
 def sum(arg1, arg2):
     return unicode(int(arg1) + int(arg2))
 
 
-@app.route('/greeting/(?P<greeting>.+)/(?P<name>.+)/')
-def greeting(*args, **kw):
-    return kw['greeting'] + ' ' + kw['name']
+@app.route('/greeting/<greeting>/<name>/')
+def greeting(greeting, name):
+    return greeting + ' ' + name
 
 app.run()

@@ -7,24 +7,24 @@ import unittest
 
 class AppKitUnitTest(unittest.TestCase):
     def setUp(self):
-        app = App(__file__)
+        app = App(__name__)
 
-        @app.route('^/$')
+        @app.route('/')
         def index():
             return '''
                 <html>
-                <head><title>Test App</tible></head>
+                <head><title>Test App</title></head>
                 <body>
                     Hello
                 </body>
                 <html>
             '''
 
-        @app.route('/hi')
+        @app.route('/hi/')
         def hi():
             return 'hi'
 
-        @app.route('/sum/(.+)/(.+)/')
+        @app.route('/sum/<arg1>/<arg2>/')
         def sum(arg1, arg2):
             return int(arg1) + int(arg2)
 
@@ -37,22 +37,17 @@ class AppKitUnitTest(unittest.TestCase):
             raise Exception('Can\'t init Gtk')
 
     def test___init__(self):
-        self.assertIsInstance(self.app.window, Gtk.Window)
+        self.assertIsInstance(self.app.gtk_window, Gtk.Window)
         self.assertIsInstance(self.app.webkit_web_view, WebKit.WebView)
-        self.assertIsInstance(self.app.webkit_main_frame, WebKit.WebFrame)
-        self.assertTrue(os.path.isdir(self.app.app_dir))
-
-    def test_route(self):
-        self.assertEqual(self.app.url_pattern.keys()[0], '^/$')
-        self.assertTrue(hasattr(self.app.url_pattern['^/$'], '__call__'))
-
-    def test__url_map_to_function(self):
-        self.assertEqual(self.app._url_map_to_function('/hi'), 'hi')
-        self.assertEqual(self.app._url_map_to_function('/sum/1/2/'), 3)
+        self.assertTrue(os.path.isdir(self.app.root_dir))
 
     def test__init_ui(self):
         self.app._init_ui()
-        self.assertEqual(self.app.window.get_title(), 'Test App')
+        self.assertEqual(self.app.gtk_window.get_title(), 'AppKit')
+
+    def test__run_server(self):
+        self.app._run_server()
+        self.assertIsInstance(self.app.port, str)
 
 if __name__ == '__main__':
     unittest.main()

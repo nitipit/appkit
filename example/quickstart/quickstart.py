@@ -1,15 +1,15 @@
 #!/usr/bin/env python
-from appkit.api.v0_2_4 import App
+from appkit.api.v0_2_6 import App
 
 app = App(__name__)
 
 
-@app.server.route('/')
+@app.route('/')
 def index():
     return '<a href="/test/">hello</a>'
 
 
-@app.server.route('/test/')
+@app.route('/test/')
 def test():
     return 'test'
 
