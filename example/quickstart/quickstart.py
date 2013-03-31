@@ -1,16 +1,11 @@
 #!/usr/bin/env python
-from appkit.api.v0_2_6 import App
+from appkit.api.v0_2_6 import App, render_template
 
 app = App(__name__)
 
 
 @app.route('/')
 def index():
-    return '<a href="/test/">hello</a>'
-
-
-@app.route('/test/')
-def test():
-    return 'test'
+    return render_template('index.html')
 
 app.run()

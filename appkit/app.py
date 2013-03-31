@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf8
-from gi.repository import Gtk, WebKit
+from gi.repository import Gtk, Gdk, WebKit
 import sys
 import os
 from multiprocessing import Process
@@ -28,6 +28,9 @@ class App(object):
         gtk_window = Gtk.Window()
         gtk_window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
+        screen = Gdk.Screen()
+        zoom_level = screen.width() / 1600.0
+        webkit_web_view.set_zoom_level(zoom_level)
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
         settings.set_property('enable-file-access-from-file-uris', True)
@@ -69,7 +72,10 @@ class App(object):
             try:
                 urllib2.urlopen('http://localhost:' + self.port)
                 break
-            except:
+            except urllib2.HTTPError as e:
+                print e
+                break
+            except urllib2.URLError as e:
                 pass
 
     def run(self):
