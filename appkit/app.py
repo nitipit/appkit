@@ -28,8 +28,8 @@ class App(object):
         gtk_window = Gtk.Window()
         gtk_window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
-        screen = Gdk.Screen()
-        zoom_level = screen.width() / 1600.0
+        screen = Gdk.Screen.get_default()
+        zoom_level = screen.get_height() / 900.0
         webkit_web_view.set_zoom_level(zoom_level)
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
@@ -64,7 +64,7 @@ class App(object):
         self.port = str(port)
         p = Process(
             target=self.server.run,
-            args=('localhost', port,),
+            args=('0.0.0.0', port,),
         )
         p.daemon = True
         p.start()
