@@ -17,7 +17,6 @@ class App(object):
     """
 
     def __init__(self, module=None):
-        self._init_ui()
         self.server = Flask(module)
         self.route = self.server.route
         self.root_dir = os.path.abspath(
@@ -78,8 +77,11 @@ class App(object):
             except urllib2.URLError as e:
                 pass
 
-    def run(self):
-        self._run_server()
-        self.webkit_web_view.load_uri('http://localhost:' + self.port)
-        sys.exit(Gtk.main())
-
+    def run(self, debug=False):
+        if debug:
+            self.server.run(debug=debug)
+        else:
+            self._init_ui()
+            self._run_server()
+            self.webkit_web_view.load_uri('http://localhost:' + self.port)
+            sys.exit(Gtk.main())
