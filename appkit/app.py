@@ -3,7 +3,7 @@
 from gi.repository import Gtk, Gdk, WebKit
 import sys
 import os
-from multiprocessing import Process
+import multiprocessing
 from flask import Flask
 import socket
 import urllib2
@@ -54,22 +54,24 @@ class App(object):
         if title is not None:
             self.gtk_window.set_title(title)
 
-    def _run_server(self):
-        # Start web server
+    def _run_server(self, is_debug):
         sock = socket.socket()
         sock.bind(('localhost', 0))
-        port = sock.getsockname()[1]
+        self.port = sock.getsockname()[1]
         sock.close()
-        self.port = str(port)
-        p = Process(
+        p = multiprocessing.Process(
             target=self.server.run,
-            args=('0.0.0.0', port,),
+            args=('0.0.0.0', self.port, is_debug),
+            kwargs={'use_reloader': False},
         )
         p.daemon = True
         p.start()
+
+    def _check_server(self):
+        port = str(self.port)
         while True:
             try:
-                urllib2.urlopen('http://localhost:' + self.port)
+                urllib2.urlopen('http://localhost:' + port)
                 break
             except urllib2.HTTPError as e:
                 print e
@@ -78,10 +80,8 @@ class App(object):
                 pass
 
     def run(self, debug=False):
-        if debug:
-            self.server.run(debug=debug)
-        else:
-            self._init_ui()
-            self._run_server()
-            self.webkit_web_view.load_uri('http://localhost:' + self.port)
-            sys.exit(Gtk.main())
+        self._run_server(is_debug=debug)
+        self._init_ui()
+        self._check_server()
+        self.webkit_web_view.load_uri('http://localhost:' + str(self.port))
+        sys.exit(Gtk.main())
