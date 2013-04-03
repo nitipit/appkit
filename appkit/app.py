@@ -54,21 +54,29 @@ class App(object):
         if title is not None:
             self.gtk_window.set_title(title)
 
-    def _run_server(self, is_debug):
-        sock = socket.socket()
-        sock.bind(('localhost', 0))
-        self.port = sock.getsockname()[1]
-        sock.close()
+    def _run_server(self, publish=False, port=None, debug=False):
+        if port is None:
+            sock = socket.socket()
+            sock.bind(('localhost', 0))
+            port = sock.getsockname()[1]
+            sock.close()
+
+        if publish:
+            host = '0.0.0.0'
+        else:
+            host = 'localhost'
+
         p = multiprocessing.Process(
             target=self.server.run,
-            args=('0.0.0.0', self.port, is_debug),
+            args=(host, port, debug),
             kwargs={'use_reloader': False},
         )
         p.daemon = True
         p.start()
+        return port
 
-    def _check_server(self):
-        port = str(self.port)
+    def _check_server(self, port=None):
+        port = str(port)
         while True:
             try:
                 urllib2.urlopen('http://localhost:' + port)
@@ -79,9 +87,13 @@ class App(object):
             except urllib2.URLError as e:
                 pass
 
-    def run(self, debug=False):
-        self._run_server(is_debug=debug)
+    def run(self, publish=False, port=None, debug=False):
+        self.port = self._run_server(
+            publish=publish,
+            port=port,
+            debug=debug
+        )
         self._init_ui()
-        self._check_server()
+        self._check_server(port=self.port)
         self.webkit_web_view.load_uri('http://localhost:' + str(self.port))
         sys.exit(Gtk.main())
