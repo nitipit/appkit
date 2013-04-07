@@ -46,8 +46,8 @@ class AppKitUnitTest(unittest.TestCase):
         self.assertEqual(self.app.gtk_window.get_title(), 'AppKit')
 
     def test__run_server(self):
-        self.app._run_server()
-        self.assertIsInstance(self.app.port, str)
+        port = self.app._run_server()
+        self.assertIsInstance(port, int)
 
 if __name__ == '__main__':
     unittest.main()
