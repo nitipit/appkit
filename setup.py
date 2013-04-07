@@ -2,6 +2,7 @@ from distutils.core import setup
 import os
 from appkit import __version__
 
+
 data = list()
 for d in os.walk('appkit/'):
     if len(d[2]) > 0:
@@ -25,5 +26,5 @@ setup(
     package_dir={'appkit': 'appkit'},
     packages=['appkit'],
     package_data={'appkit': data},
-    install_requires=['sphinx_bootstrap_theme', 'beautifulsoup4'],
+    install_requires=['sphinx_bootstrap_theme', ],
 )
