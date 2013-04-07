@@ -12,6 +12,9 @@ for d in os.walk('appkit/'):
         )
         data.extend(path_list)
 
+requires = ['sphinx_bootstrap_theme', 'flask', ]
+requires.append('beautifulsoup4')  # v0_2_4 backward compatibility
+
 setup(
     name='AppKit',
     version=__version__,
@@ -26,5 +29,5 @@ setup(
     package_dir={'appkit': 'appkit'},
     packages=['appkit'],
     package_data={'appkit': data},
-    install_requires=['sphinx_bootstrap_theme', ],
+    install_requires=requires,
 )
