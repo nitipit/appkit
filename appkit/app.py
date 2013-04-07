@@ -22,6 +22,7 @@ class App(object):
         self.root_dir = os.path.abspath(
             os.path.dirname(module)
         )
+        self._init_ui()
 
     def _init_ui(self):
         gtk_window = Gtk.Window()
@@ -93,7 +94,6 @@ class App(object):
             port=port,
             debug=debug
         )
-        self._init_ui()
         self._check_server(port=self.port)
         self.webkit_web_view.load_uri('http://localhost:' + str(self.port))
         sys.exit(Gtk.main())
