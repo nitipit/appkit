@@ -1,0 +1,9 @@
+{
+    "jquery/": "http://code.jquery.com/jquery-1.9.1.min.js",
+    "bootstrap": "http://twitter.github.io/bootstrap/assets/bootstrap.zip",
+    "font-awesome": "https://github.com/FortAwesome/Font-Awesome/zipball/master",
+    "jquery-transit/": "http://ricostacruz.com/jquery.transit/jquery.transit.min.js",
+    "gnome-logo": "https://live.gnome.org/BrandGuidelines?action=AttachFile&do=get&target=GnomeLogoVertical.svg",
+    "html5-logo": "http://www.w3.org/html/logo/downloads/HTML5_Logo.svg",
+    "python-logo": "http://www.python.org/community/logos/python-powered-h.svg"
+}
