@@ -22,7 +22,7 @@ class App(object):
         self.root_dir = os.path.abspath(
             os.path.dirname(module)
         )
-        self._init_ui()
+        (self.gtk_window, self.webkit_web_view) = self._init_ui()
 
     def _init_ui(self):
         gtk_window = Gtk.Window()
@@ -39,11 +39,14 @@ class App(object):
         scrollWindow = Gtk.ScrolledWindow()
         scrollWindow.add(webkit_web_view)
         gtk_window.add(scrollWindow)
-        gtk_window.connect('destroy', Gtk.main_quit)
+        gtk_window.connect('destroy', self._on_gtk_window_destroy)
         gtk_window.show_all()
         webkit_web_view.connect('notify::title', self._on_notify_title)
-        self.gtk_window = gtk_window
-        self.webkit_web_view = webkit_web_view
+        return (gtk_window, webkit_web_view)
+
+    def _on_gtk_window_destroy(self, window, *args, **kwargs):
+        self.server_process.terminate()
+        Gtk.main_quit()
 
     def _on_notify_title(
             self,
@@ -67,14 +70,13 @@ class App(object):
         else:
             host = 'localhost'
 
-        p = multiprocessing.Process(
+        process = multiprocessing.Process(
             target=self.server.run,
             args=(host, port, debug),
             kwargs={'use_reloader': False},
         )
-        p.daemon = True
-        p.start()
-        return port
+        process.start()
+        return (process, port)
 
     def _check_server(self, port=None):
         port = str(port)
@@ -89,7 +91,7 @@ class App(object):
                 pass
 
     def run(self, publish=False, port=None, debug=False):
-        self.port = self._run_server(
+        (self.server_process, self.port) = self._run_server(
             publish=publish,
             port=port,
             debug=debug
