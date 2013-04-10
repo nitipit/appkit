@@ -35,21 +35,18 @@ Quick Start
 
     #!/usr/bin/env python
 
-    from appkit.api.v0_2_4 import App
+    from appkit.api.v0_2_6 import App
 
-    app = App(__file__)
+    app = App(__name__)
 
 
-    @app.route('^/$')
+    @app.route(/)
     def home():
         return '<a href="/test/Hello/World/" />Link</a>'
 
 
-    @app.route('/test/(.+)/(.+)/')
+    @app.route('/test/text1/text2/')
     def test(text1=None, text2=None):
         return ('<h1>' + text1 + ' ' + text2 + '</h1>', 'text/html')
 
     app.run()
-
-![image](https://raw.github.com/nitipit/appkit/master/docs/1.png)
-![image](https://raw.github.com/nitipit/appkit/master/docs/2.png)
