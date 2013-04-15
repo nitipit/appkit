@@ -45,7 +45,7 @@ Quick Start
         return '<a href="/test/Hello/World/" />Link</a>'
 
 
-    @app.route('/test/text1/text2/')
+    @app.route('/test/<text1>/<text2>/')
     def test(text1=None, text2=None):
         return ('<h1>' + text1 + ' ' + text2 + '</h1>', 'text/html')
 
