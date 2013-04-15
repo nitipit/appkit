@@ -30,5 +30,4 @@ setup(
     packages=['appkit'],
     package_data={'appkit': data},
     install_requires=requires,
-    scripts=['appkit/bin/appkit', ],
 )
