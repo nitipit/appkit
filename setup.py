@@ -12,7 +12,7 @@ for d in os.walk('appkit/'):
         )
         data.extend(path_list)
 
-requires = ['sphinx_bootstrap_theme', 'flask', ]
+requires = ['flask', ]
 requires.append('beautifulsoup4')  # v0_2_4 backward compatibility
 
 setup(
