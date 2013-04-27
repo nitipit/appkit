@@ -6,11 +6,10 @@
 Welcome to AppKit's documentation!
 ==================================
 
-Contents:
-
 .. toctree::
     :maxdepth: 2
 
+    readme
     tutorial
 
 
