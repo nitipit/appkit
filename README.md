@@ -40,7 +40,7 @@ Quick Start
     app = App(__name__)
 
 
-    @app.route(/)
+    @app.route('/')
     def home():
         return '<a href="/test/Hello/World/" />Link</a>'
 
