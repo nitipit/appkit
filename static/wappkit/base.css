@@ -1,0 +1,9 @@
+body {
+    padding-top: 40px;
+}
+
+@media (max-width: 979px) {
+    .navbar-fixed-top {
+        margin-bottom: 0px !important;
+    }
+}

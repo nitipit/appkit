@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>WappKit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/static/wappkit/base.css" rel="stylesheet" media="screen">
+<link href="/static/bower/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="/static/bower/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+<link href="/static/bower/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
+
+
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a style="margin-top: 2px;" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-reorder" style="color: black;"></i>
+            </a>
+            <a class="brand" href="/">AppKit</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li id="nav-release">
+                        <a href="/release/v0_2_6/">Release Note</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="empty" style="height: 20px;"></div>
+<div class="container">
+<div class="row">
+    <div class="span8">
+        <div class="markdown">
+<textarea>
+<h1 class="btn btn-large btn-success">Version 0.2.6</h1>
+
+<h3>API Changed to version 0.2.6 !!!</h3>
+
+Application that use API version 0.2.4  will work fine
+if it has been imported as
+
+    from appkit.api.v0_2_4 import App
+
+
+<h3>Changes</h3>
+
+- Use <a href="http://flask.pocoo.org/">Flask</a> Application for backend
+- Change App route api, use route from flask.  
+  (Read more at http://flask.pocoo.org/docs/api/#url-route-registrations)  
+  For examples: 
+
+        app.route('/')
+        def home():
+            return 'hi'
+
+        app.route('/blog/<arg>/')
+        def blog(arg):
+            return arg
+
+</textarea>
+</div>
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'appkit'; // required: replace example with your forum shortname
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</div>
+</div>
+
+<script src="/static/bower/jquery/jquery.min.js"></script>
+<script src="/static/bower/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/static/bower/marked/lib/marked.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#nav-release').addClass('active');
+    $('.markdown').each(function(){
+        var html = marked($('textarea', this).text());
+        $(this).html(html);
+    });
+});
+</script>
+
+</body>
+</html>
