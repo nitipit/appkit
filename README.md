@@ -47,6 +47,6 @@ Quick Start
 
     @app.route('/test/<text1>/<text2>/')
     def test(text1=None, text2=None):
-        return ('<h1>' + text1 + ' ' + text2 + '</h1>', 'text/html')
+        return '<h1>' + text1 + ' ' + text2 + '</h1>'
 
     app.run()
