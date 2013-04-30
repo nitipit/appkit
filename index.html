@@ -23,6 +23,11 @@
                     <li id="nav-release">
                         <a href="release/v0_2_6/index.html">Release Note</a>
                     </li>
+                    <li id="nav-fork">
+                        <a href="https://github.com/nitipit/appkit/" style="margin: 0px; padding: 0px;">
+                            <div class="btn btn-primary">Star me on Github</div>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -30,11 +35,100 @@
 </div>
 
 <div class="container">
+    <div class="row">
+        <div class="span8" style="margin-top: 20px;">
+            <div class="markdown">
+                <textarea> 
+                
+AppKit
+======
+
+> Gnome desktop application framework based on Webkit, HTML5, CSS3,
+> Javascript and Python
+
+"AppKit" will be a framework for gnome desktop application powered by
+[WebKit](http://www.webkit.org/) engine, which means we can bring web
+technology such as HTML5, CSS3, Javascript and Web browser engine to
+desktop.
+
+Full Documentation
+------------------
+
+[https://appkit.readthedocs.org/en/latest](https://appkit.readthedocs.org/en/latest)/
+
+Target Platforms
+----------------
+
+Linux
+
+Installation
+------------
+
+### Option 1: From PyPI (Release version)
+
+    $ pip install appkit
+
+### Option 2: From Git
+
+    $ pip install git+git://github.com/nitipit/appkit.git
+
+Quick Start
+-----------
+
+    #!/usr/bin/env python
+
+    from appkit.api.v0_2_6 import App
+
+    app = App(__name__)
+
+
+    @app.route('/')
+    def home():
+        return '<a href="/test/Hello/World/" />Link</a>'
+
+
+    @app.route('/test/<text1>/<text2>/')
+    def test(text1=None, text2=None):
+        return ('<h1>' + text1 + ' ' + text2 + '</h1>', 'text/html')
+
+    app.run()
+                </textarea>
+            </div>
+            <img src="static/wappkit/index/1.png" style="width: 40%;" />
+            <img src="static/wappkit/index/2.png" style="width: 40%;" />
+        </div>
+        <div class="span4" style="margin-top: 30px;">
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'appkit'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a> 
+        </div>
+    </div>
+    <div class="empty" style="height: 50px;"></div>
 </div>
 
 <script src="static/bower/jquery/jquery.min.js"></script>
 <script src="static/bower/bootstrap/js/bootstrap.min.js"></script>
 
+<script type="text/javascript" src="static/bower/marked/lib/marked.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('.markdown').each(function(){
+        var html = marked($('textarea', this).text());
+        $(this).html(html);
+    });
+});
+</script>
 
 <script type="text/javascript">
 
