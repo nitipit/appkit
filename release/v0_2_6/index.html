@@ -57,6 +57,10 @@ if it has been imported as
   (Read more at http://flask.pocoo.org/docs/api/#url-route-registrations)  
   For examples: 
 
+        from appkit.api.v0_2_6 import App
+
+        app = App(__name__)
+
         app.route('/')
         def home():
             return 'hi'
