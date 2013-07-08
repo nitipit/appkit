@@ -6,10 +6,7 @@ from appkit import __version__
 data = list()
 for d in os.walk('appkit/'):
     if len(d[2]) > 0:
-        path_list = map(
-            lambda x: str.join('/', os.path.join(d[0], x).split('/')[1:]),
-            d[2]
-        )
+        path_list = [str.join('/', os.path.join(d[0], x).split('/')[1:]) for x in d[2]]
         data.extend(path_list)
 
 requires = ['flask', ]
