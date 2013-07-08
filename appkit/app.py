@@ -6,7 +6,7 @@ import os
 import multiprocessing
 from flask import Flask
 import socket
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 Gtk.init('')
 
@@ -82,12 +82,12 @@ class App(object):
         port = str(port)
         while True:
             try:
-                urllib2.urlopen('http://localhost:' + port)
+                urllib.request.urlopen('http://localhost:' + port)
                 break
-            except urllib2.HTTPError as e:
+            except urllib.error.HTTPError as e:
                 print(e)
                 break
-            except urllib2.URLError as e:
+            except urllib.error.URLError as e:
                 pass
 
     def run(self, publish=False, port=None, debug=False):

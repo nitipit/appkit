@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf8
 from gi.repository import Gtk, WebKit
-import urlparse
+import urllib.parse
 import os
 import tempfile
 import mimetypes
@@ -153,8 +153,8 @@ class App(object):
             network_response=None):
         if self.debug is True:
             print('on_web_frame_resource_request_starting')
-        url = urlparse.unquote(network_request.get_uri())
-        url = urlparse.urlparse(url.decode('utf-8'))
+        url = urllib.parse.unquote(network_request.get_uri())
+        url = urllib.parse.urlparse(url.decode('utf-8'))
         if url.netloc == '':
             # Try mapping request path to function. `return`.
             # If there's no mapped function then serve it as static file.
@@ -197,9 +197,9 @@ class App(object):
             *arg, **kw):
         if self.debug is True:
             print('on_web_frame_resource_response_received')
-        url = urlparse.urlparse(network_response.get_uri())
-        url = urlparse.urlparse(url.path)
-        query = urlparse.parse_qs(url.query)
+        url = urllib.parse.urlparse(network_response.get_uri())
+        url = urllib.parse.urlparse(url.path)
+        query = urllib.parse.parse_qs(url.query)
         if 'tmp' in query:
             os.remove(url.path)
 
