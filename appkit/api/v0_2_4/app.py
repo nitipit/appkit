@@ -253,7 +253,7 @@ def make_response(response):
     Potential features to be added
       - Parameters validation
     """
-    if isinstance(response, unicode) or \
+    if isinstance(response, str) or \
             isinstance(response, str):
         response = (response, 'text/html')
 
