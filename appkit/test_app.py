@@ -47,7 +47,7 @@ class AppKitUnitTest(unittest.TestCase):
 
     def test__run_server(self):
         (process, port) = self.app._run_server()
-        print process
+        print(process)
         self.assertIsInstance(process, multiprocessing.Process)
         self.assertIsInstance(port, int)
         process.terminate()
