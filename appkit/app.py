@@ -6,7 +6,7 @@ import os
 import multiprocessing
 from flask import Flask
 import socket
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 Gtk.init('')
 
@@ -53,7 +53,7 @@ class App(object):
             webkit_web_view,
             g_param_string,
             *args, **kwargs):
-        print 'on_notify_title'
+        print('on_notify_title')
         title = webkit_web_view.get_title()
         if title is not None:
             self.gtk_window.set_title(title)
@@ -82,12 +82,12 @@ class App(object):
         port = str(port)
         while True:
             try:
-                urllib2.urlopen('http://localhost:' + port)
+                urllib.request.urlopen('http://localhost:' + port)
                 break
-            except urllib2.HTTPError as e:
-                print e
+            except urllib.error.HTTPError as e:
+                print(e)
                 break
-            except urllib2.URLError as e:
+            except urllib.error.URLError as e:
                 pass
 
     def run(self, publish=False, port=None, debug=False):
