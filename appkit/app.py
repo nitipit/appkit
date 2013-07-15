@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 # coding=utf8
+from __future__ import print_function, unicode_literals
 from gi.repository import Gtk, Gdk, WebKit
 import sys
 import os
 import multiprocessing
 from flask import Flask
 import socket
-import urllib2
+
+try:
+    from urllib.request import urlopen
+    from urllib.error import HTTPError, URLError
+except:
+    from urllib2 import urlopen, HTTPError, URLError
 
 Gtk.init('')
 
@@ -53,7 +59,7 @@ class App(object):
             webkit_web_view,
             g_param_string,
             *args, **kwargs):
-        print 'on_notify_title'
+        print('on_notify_title')
         title = webkit_web_view.get_title()
         if title is not None:
             self.gtk_window.set_title(title)
@@ -82,12 +88,12 @@ class App(object):
         port = str(port)
         while True:
             try:
-                urllib2.urlopen('http://localhost:' + port)
+                urlopen('http://localhost:' + port)
                 break
-            except urllib2.HTTPError as e:
-                print e
+            except HTTPError as e:
+                print(e)
                 break
-            except urllib2.URLError as e:
+            except URLError as e:
                 pass
 
     def run(self, publish=False, port=None, debug=False):

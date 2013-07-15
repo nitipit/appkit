@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'AppKit'
-copyright = u'2013, Nitipit Nontasuwan'
+project = 'AppKit'
+copyright = '2013, Nitipit Nontasuwan'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -183,8 +183,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'AppKit.tex', u'AppKit Documentation',
-   u'Nitipit Nontasuwan', 'manual'),
+  ('index', 'AppKit.tex', 'AppKit Documentation',
+   'Nitipit Nontasuwan', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,8 +213,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'appkit', u'AppKit Documentation',
-     [u'Nitipit Nontasuwan'], 1)
+    ('index', 'appkit', 'AppKit Documentation',
+     ['Nitipit Nontasuwan'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'AppKit', u'AppKit Documentation',
-   u'Nitipit Nontasuwan', 'AppKit', 'One line description of project.',
+  ('index', 'AppKit', 'AppKit Documentation',
+   'Nitipit Nontasuwan', 'AppKit', 'One line description of project.',
    'Miscellaneous'),
 ]
 
