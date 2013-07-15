@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 # coding=utf8
+from __future__ import print_function, unicode_literals
 from gi.repository import Gtk, Gdk, WebKit
 import sys
 import os
 import multiprocessing
 from flask import Flask
 import socket
-import urllib.request, urllib.error, urllib.parse
+
+try:
+    from urllib.request import urlopen
+    from urllib.error import HTTPError, URLError
+except:
+    from urllib2 import urlopen, HTTPError, URLError
 
 Gtk.init('')
 
@@ -82,12 +88,12 @@ class App(object):
         port = str(port)
         while True:
             try:
-                urllib.request.urlopen('http://localhost:' + port)
+                urlopen('http://localhost:' + port)
                 break
-            except urllib.error.HTTPError as e:
+            except HTTPError as e:
                 print(e)
                 break
-            except urllib.error.URLError as e:
+            except URLError as e:
                 pass
 
     def run(self, publish=False, port=None, debug=False):
