@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf8
 from gi.repository import Gtk, WebKit
-import urllib.parse
+import urlparse
 import os
 import tempfile
 import mimetypes
@@ -106,7 +106,7 @@ class App(object):
         status = webkitView.get_load_status()
         if status == status.FINISHED:
             if self.debug is True:
-                print('Load finished')
+                print 'Load finished'
 
     def on_navigation_policy_decision_requested(
             self,
@@ -116,7 +116,7 @@ class App(object):
             webkit_web_navigation_action,
             webkit_web_policy_dicision):
         if self.debug is True:
-            print('on_navigation_policy_decision_requested')
+            print 'on_navigation_policy_decision_requested'
 
     def on_web_view_resource_request_starting(
             self,
@@ -126,7 +126,7 @@ class App(object):
             network_request,
             network_response=None):
         if self.debug is True:
-            print('on_web_view_resource_request_starting')
+            print 'on_web_view_resource_request_starting'
 
     def on_web_view_resource_response_received(
             self,
@@ -136,14 +136,14 @@ class App(object):
             network_response,
             *arg, **kw):
         if self.debug is True:
-            print('on_web_view_resource_response_received')
+            print 'on_web_view_resource_response_received'
 
     def on_web_view_resource_load_finished(
             self,
             web_view, web_frame, web_resource,
             *args, **kw):
         if self.debug is True:
-            print('on_web_view_resource_load_finished')
+            print 'on_web_view_resource_load_finished'
 
     def on_web_frame_resource_request_starting(
             self,
@@ -152,9 +152,9 @@ class App(object):
             network_request,
             network_response=None):
         if self.debug is True:
-            print('on_web_frame_resource_request_starting')
-        url = urllib.parse.unquote(network_request.get_uri())
-        url = urllib.parse.urlparse(url.decode('utf-8'))
+            print 'on_web_frame_resource_request_starting'
+        url = urlparse.unquote(network_request.get_uri())
+        url = urlparse.urlparse(url.decode('utf-8'))
         if url.netloc == '':
             # Try mapping request path to function. `return`.
             # If there's no mapped function then serve it as static file.
@@ -196,10 +196,10 @@ class App(object):
             network_response,
             *arg, **kw):
         if self.debug is True:
-            print('on_web_frame_resource_response_received')
-        url = urllib.parse.urlparse(network_response.get_uri())
-        url = urllib.parse.urlparse(url.path)
-        query = urllib.parse.parse_qs(url.query)
+            print 'on_web_frame_resource_response_received'
+        url = urlparse.urlparse(network_response.get_uri())
+        url = urlparse.urlparse(url.path)
+        query = urlparse.parse_qs(url.query)
         if 'tmp' in query:
             os.remove(url.path)
 
@@ -209,7 +209,7 @@ class App(object):
             web_resource,
             *arg, **kw):
         if self.debug is True:
-            print('on_web_frame_resource_load_finished')
+            print 'on_web_frame_resource_load_finished'
 
     def on_web_frame_resource_load_failed(
             self,
@@ -217,7 +217,7 @@ class App(object):
             web_resource,
             *arg, **kw):
         if self.debug is True:
-            print('on_web_frame_resource_load_failed')
+            print 'on_web_frame_resource_load_failed'
 
     def _init_ui(self):
         """Initial the first UI page.
@@ -232,7 +232,7 @@ class App(object):
             pass
 
         if self.debug is True:
-            print(self.app_dir)
+            print self.app_dir
 
         # Use load_string instead of load_uri because it shows warning.
         self.webkit_web_view.load_string(
@@ -253,7 +253,7 @@ def make_response(response):
     Potential features to be added
       - Parameters validation
     """
-    if isinstance(response, str) or \
+    if isinstance(response, unicode) or \
             isinstance(response, str):
         response = (response, 'text/html')
 

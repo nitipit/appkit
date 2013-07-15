@@ -21,7 +21,7 @@ def home():
 
 @app.route('/sum/(.+)/(.+)/')
 def sum(arg1, arg2):
-    return str(int(arg1) + int(arg2))
+    return unicode(int(arg1) + int(arg2))
 
 
 @app.route('/greeting/(?P<greeting>.+)/(?P<name>.+)/')
