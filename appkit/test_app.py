@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from appkit.app import *
 import os
 import unittest
@@ -51,6 +49,7 @@ class AppKitUnitTest(unittest.TestCase):
         self.assertIsInstance(process, multiprocessing.Process)
         self.assertIsInstance(port, int)
         process.terminate()
+
 
 if __name__ == '__main__':
     unittest.main()
