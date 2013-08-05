@@ -9,7 +9,7 @@ for d in os.walk('appkit/'):
         path_list = [str.join('/', os.path.join(d[0], x).split('/')[1:]) for x in d[2]]
         data.extend(path_list)
 
-requires = ['flask', ]
+requires = ['flask', 'pygobject',]
 requires.append('beautifulsoup4')  # v0_2_4 backward compatibility
 
 setup(
