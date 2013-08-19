@@ -45,7 +45,7 @@ class App(object):
         scrollWindow = Gtk.ScrolledWindow()
         scrollWindow.add(webkit_web_view)
         gtk_window.add(scrollWindow)
-        gtk_window.connect('destroy', self._on_gtk_window_destroy)
+        gtk_window.connect('delete-event', self._on_gtk_window_destroy)
         gtk_window.show_all()
         webkit_web_view.connect('notify::title', self._on_notify_title)
         return (gtk_window, webkit_web_view)
