@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 # coding=utf8
 from __future__ import print_function, unicode_literals
-from gi.repository import Gtk, Gdk, WebKit
+from gi.repository import Gtk, WebKit
 import sys
 import os
 import multiprocessing
 from flask import Flask
 import socket
 
-try:
-    from urllib.request import urlopen
-    from urllib.error import HTTPError, URLError
-except:
-    from urllib2 import urlopen, HTTPError, URLError
+from urllib2 import urlopen, HTTPError, URLError
 
 Gtk.init('')
 
@@ -34,9 +30,6 @@ class App(object):
         gtk_window = Gtk.Window()
         gtk_window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
-        screen = Gdk.Screen.get_default()
-        zoom_level = screen.get_height() / 900.0
-        webkit_web_view.set_zoom_level(zoom_level)
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
         settings.set_property('enable-file-access-from-file-uris', True)
@@ -86,6 +79,9 @@ class App(object):
 
     def _check_server(self, port=None):
         port = str(port)
+
+        # These code may be replaced by using signal between
+        # http server and GIO network
         while True:
             try:
                 urlopen('http://localhost:' + port)
