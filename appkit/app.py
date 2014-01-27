@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf8
 from __future__ import print_function, unicode_literals
-from gi.repository import Gtk, WebKit
+from gi.repository import Gtk, Gdk, WebKit
 import sys
 import os
 import multiprocessing
@@ -30,11 +30,19 @@ class App(object):
         gtk_window = Gtk.Window()
         gtk_window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
+
+        screen = Gdk.Screen.get_default()
+        monitor_geometry = screen.get_primary_monitor()
+        monitor_geometry = screen.get_monitor_geometry(monitor_geometry)
+
         settings = webkit_web_view.get_settings()
         settings.set_property('enable-universal-access-from-file-uris', True)
         settings.set_property('enable-file-access-from-file-uris', True)
         settings.set_property('default-encoding', 'utf-8')
-        gtk_window.set_default_size(800, 600)
+        gtk_window.set_default_size(
+            monitor_geometry.width * 3.0 / 5.0,
+            monitor_geometry.height * 3.0 / 5.0,
+        )
         scrollWindow = Gtk.ScrolledWindow()
         scrollWindow.add(webkit_web_view)
         gtk_window.add(scrollWindow)
