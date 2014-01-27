@@ -40,7 +40,7 @@ class App(object):
         settings.set_property('enable-file-access-from-file-uris', True)
         settings.set_property('default-encoding', 'utf-8')
         gtk_window.set_default_size(
-            monitor_geometry.width * 3.0 / 5.0,
+            monitor_geometry.width * 1.0 / 2.0,
             monitor_geometry.height * 3.0 / 5.0,
         )
         scrollWindow = Gtk.ScrolledWindow()
