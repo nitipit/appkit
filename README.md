@@ -17,7 +17,7 @@ Full Documentation
 Target Platforms
 ----------------
 
-Linux
+Linux, Gnome
 
 Installation
 ------------
