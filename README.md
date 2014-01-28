@@ -45,3 +45,8 @@ Quick Start
         return '<h1>' + text1 + ' ' + text2 + '</h1>'
 
     app.run()
+
+Example App
+-----------
+- https://github.com/nitipit/markdo
+- https://github.com/nitipit/restr
