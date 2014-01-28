@@ -9,11 +9,6 @@ AppKit
 technology such as HTML5, CSS3, Javascript and Web browser engine to
 desktop.
 
-Full Documentation
-------------------
-
-[https://appkit.readthedocs.org/en/latest](https://appkit.readthedocs.org/en/latest)/
-
 Target Platforms
 ----------------
 
