@@ -35,7 +35,7 @@ Quick Start
 
     #!/usr/bin/env python
 
-    from appkit.api.v0_2_6 import App
+    from appkit.api.v0_2_8 import App
 
     app = App(__name__)
 
