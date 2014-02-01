@@ -10,26 +10,28 @@ import socket
 
 from urllib2 import urlopen, HTTPError, URLError
 
-Gtk.init('')
 
-
-class App(object):
+class App(Gtk.Application):
     """App
     Application class
     """
 
     def __init__(self, module=None):
+        Gtk.Application.__init__(self)
         self.server = Flask(module)
         self.route = self.server.route
         self.root_dir = os.path.abspath(
             os.path.dirname(module)
         )
-        (self.gtk_window, self.webkit_web_view) = self._init_ui()
 
-    def _init_ui(self):
-        gtk_window = Gtk.Window()
+    def do_startup(self):
+        """Gtk.Application.run() will call this function()"""
+
+        Gtk.Application.do_startup(self)
+        gtk_window = Gtk.ApplicationWindow(application=self)
         gtk_window.set_title('AppKit')
         webkit_web_view = WebKit.WebView()
+        webkit_web_view.load_uri('http://localhost:' + str(self.port))
 
         screen = Gdk.Screen.get_default()
         monitor_geometry = screen.get_primary_monitor()
@@ -49,11 +51,17 @@ class App(object):
         gtk_window.connect('delete-event', self._on_gtk_window_destroy)
         gtk_window.show_all()
         webkit_web_view.connect('notify::title', self._on_notify_title)
-        return (gtk_window, webkit_web_view)
+        self.gtk_window = gtk_window
+        self.webkit_web_view = webkit_web_view
+
+    def do_activate(self):
+        """Gtk.Application.run() will call this function()
+        after do_startup()
+        """
+        pass
 
     def _on_gtk_window_destroy(self, window, *args, **kwargs):
         self.server_process.terminate()
-        Gtk.main_quit()
 
     def _on_notify_title(
             self,
@@ -100,12 +108,12 @@ class App(object):
             except URLError as e:
                 pass
 
-    def run(self, publish=False, port=None, debug=False):
+    def run(self, publish=False, port=None, debug=False, *args, **kw):
         (self.server_process, self.port) = self._run_server(
             publish=publish,
             port=port,
             debug=debug
         )
         self._check_server(port=self.port)
-        self.webkit_web_view.load_uri('http://localhost:' + str(self.port))
-        sys.exit(Gtk.main())
+        exit_status = super(App, self).run(sys.argv)
+        sys.exit(exit_status)
