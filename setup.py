@@ -13,7 +13,7 @@ requires = ['flask', 'pygobject',]
 requires.append('beautifulsoup4')  # v0_2_4 backward compatibility
 
 setup(
-    name='appkit',
+    name='AppKit',
     version=__version__,
     description='Desktop application framework based on Webkit' +
     ' HTML5, CSS3, Javascript and Python',
