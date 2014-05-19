@@ -13,7 +13,7 @@ requires.append('beautifulsoup4')  # v0_2_4 backward compatibility
 
 setup(
     name='AppKit',
-    version='0.2.9',
+    version='0.2.8',
     description='Desktop application framework based on Webkit' +
     ' HTML5, CSS3, Javascript and Python',
     author='Nitipit Nontasuwan',
