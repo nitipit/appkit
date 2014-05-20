@@ -20,9 +20,6 @@ class App(Gtk.Application):
         Gtk.Application.__init__(self)
         self.server = Flask(module)
         self.route = self.server.route
-        self.root_dir = os.path.abspath(
-            os.path.dirname(module)
-        )
 
     def do_startup(self):
         """Gtk.Application.run() will call this function()"""
