@@ -3,12 +3,15 @@
 from __future__ import print_function, unicode_literals
 from gi.repository import Gtk, Gdk, WebKit
 import sys
-import os
 import multiprocessing
 from flask import Flask
 import socket
 
-from urllib2 import urlopen, HTTPError, URLError
+try:
+    from urllib2 import urlopen, HTTPError, URLError
+except:
+    from urllib.request import urlopen
+    from urllib.error import HTTPError, URLError
 
 
 class App(Gtk.Application):
@@ -65,7 +68,6 @@ class App(Gtk.Application):
             webkit_web_view,
             g_param_string,
             *args, **kwargs):
-        print('on_notify_title')
         title = webkit_web_view.get_title()
         if title is not None:
             self.gtk_window.set_title(title)
