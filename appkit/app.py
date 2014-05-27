@@ -107,6 +107,11 @@ class App(Gtk.Application):
             except URLError as e:
                 pass
 
+    def run_server(self, *args, **kw):
+        (server_process, port) = self._run_server(*args, **kw)
+        return (server_process, port)
+
+
     def run(self, publish=False, port=None, debug=False, *args, **kw):
         (self.server_process, self.port) = self._run_server(
             publish=publish,
