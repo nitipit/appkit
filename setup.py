@@ -1,5 +1,6 @@
 from setuptools import setup
 import os
+import platform
 
 
 data = list()
@@ -8,8 +9,10 @@ for d in os.walk('appkit/'):
         path_list = [str.join('/', os.path.join(d[0], x).split('/')[1:]) for x in d[2]]
         data.extend(path_list)
 
-requires = ['flask', 'pygobject',]
+requires = ['flask', ]
 requires.append('beautifulsoup4')  # v0_2_4 backward compatibility
+if platform.dist()[0] == 'windows':
+    requires.append('pygobject')
 
 setup(
     name='AppKit',
