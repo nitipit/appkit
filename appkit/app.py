@@ -7,6 +7,7 @@ import multiprocessing
 from flask import Flask
 import socket
 from gevent import pywsgi
+from geventwebsocket.handler import WebSocketHandler
 
 try:
     from urllib2 import urlopen, HTTPError, URLError
@@ -22,8 +23,18 @@ class App(Gtk.Application):
 
     def __init__(self, module=None):
         Gtk.Application.__init__(self)
-        self.server = Flask(module)
-        self.route = self.server.route
+        self.flask = Flask(module)
+        self.route = self.flask.route
+        self.debug = False
+
+        """Port lock to be used by server later
+        Don't forget to `self.socket.close()`
+        """
+        sock = socket.socket()
+        sock.bind(('localhost', 0))
+        self.port = sock.getsockname()[1]
+        sock.close()
+        self.host = None
 
     def do_startup(self):
         """Gtk.Application.run() will call this function()"""
@@ -73,21 +84,17 @@ class App(Gtk.Application):
         if title is not None:
             self.gtk_window.set_title(title)
 
-    def _run_server(self, publish=False, port=None, debug=False):
-        if port is None:
-            sock = socket.socket()
-            sock.bind(('localhost', 0))
-            port = sock.getsockname()[1]
-            sock.close()
-
+    def _run_server(self, publish=False):
         if publish:
             host = '0.0.0.0'
         else:
             host = 'localhost'
 
+        self.flask.debug = self.debug
         server = pywsgi.WSGIServer(
-            (host, port),
-            self.server
+            (host, self.port),
+            self.flask,
+            handler_class=WebSocketHandler,
         )
 
         process = multiprocessing.Process(
@@ -96,10 +103,10 @@ class App(Gtk.Application):
             #kwargs={'use_reloader': False},
         )
         process.start()
-        return (process, port)
+        return process
 
-    def _check_server(self, port=None):
-        port = str(port)
+    def _check_server(self):
+        port = str(self.port)
 
         # These code may be replaced by using signal between
         # http server and GIO network
@@ -113,17 +120,10 @@ class App(Gtk.Application):
             except URLError as e:
                 pass
 
-    def run_server(self, *args, **kw):
-        (server_process, port) = self._run_server(*args, **kw)
-        return (server_process, port)
-
-
-    def run(self, publish=False, port=None, debug=False, *args, **kw):
-        (self.server_process, self.port) = self._run_server(
+    def run(self, publish=False, *args, **kw):
+        self.server_process  = self._run_server(
             publish=publish,
-            port=port,
-            debug=debug
         )
-        self._check_server(port=self.port)
+        self._check_server()
         exit_status = super(App, self).run(sys.argv)
         sys.exit(exit_status)
