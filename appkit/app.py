@@ -4,7 +4,7 @@ from __future__ import print_function, unicode_literals
 from gi.repository import Gtk, Gdk, WebKit
 import sys
 import multiprocessing
-from flask import Flask
+from flask import Flask, request, render_template
 import socket
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
