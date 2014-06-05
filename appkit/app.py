@@ -6,8 +6,7 @@ import sys
 import multiprocessing
 from flask import Flask, request, render_template
 import socket
-from gevent import pywsgi
-from geventwebsocket.handler import WebSocketHandler
+
 
 try:
     from urllib2 import urlopen, HTTPError, URLError
@@ -91,16 +90,10 @@ class App(Gtk.Application):
             host = 'localhost'
 
         self.flask.debug = self.debug
-        server = pywsgi.WSGIServer(
-            (host, self.port),
-            self.flask,
-            handler_class=WebSocketHandler,
-        )
-
         process = multiprocessing.Process(
-            target=server.serve_forever
-            #args=(host, port, debug),
-            #kwargs={'use_reloader': False},
+            target=self.flask.run,
+            args=(host, self.port, self.debug),
+            kwargs={'use_reloader': False},
         )
         process.start()
         return process
