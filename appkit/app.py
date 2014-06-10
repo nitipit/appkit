@@ -20,20 +20,22 @@ class App(Gtk.Application):
     Application class
     """
 
-    def __init__(self, module=None):
+    def __init__(self, module=None, host=None, port=None):
         Gtk.Application.__init__(self)
         self.flask = Flask(module)
         self.route = self.flask.route
         self.debug = False
 
-        """Port lock to be used by server later
-        Don't forget to `self.socket.close()`
-        """
-        sock = socket.socket()
-        sock.bind(('localhost', 0))
-        self.port = sock.getsockname()[1]
-        sock.close()
-        self.host = None
+        if port == None:
+            """Port lock to be used by server later
+            Don't forget to `self.socket.close()`
+            """
+            sock = socket.socket()
+            sock.bind(('localhost', 0))
+            self.port = sock.getsockname()[1]
+            sock.close()
+
+        self.host = host
 
     def do_startup(self):
         """Gtk.Application.run() will call this function()"""
@@ -83,16 +85,11 @@ class App(Gtk.Application):
         if title is not None:
             self.gtk_window.set_title(title)
 
-    def _run_server(self, publish=False):
-        if publish:
-            host = '0.0.0.0'
-        else:
-            host = 'localhost'
-
+    def _run_server(self, port=None):
         self.flask.debug = self.debug
         process = multiprocessing.Process(
             target=self.flask.run,
-            args=(host, self.port, self.debug),
+            args=(self.host, self.port, self.debug),
             kwargs={'use_reloader': False},
         )
         process.start()
@@ -113,9 +110,9 @@ class App(Gtk.Application):
             except URLError as e:
                 pass
 
-    def run(self, publish=False, *args, **kw):
+    def run(self, *args, **kw):
         self.server_process  = self._run_server(
-            publish=publish,
+            port=self.port,
         )
         self._check_server()
         exit_status = super(App, self).run(sys.argv)
