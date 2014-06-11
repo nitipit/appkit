@@ -26,7 +26,7 @@ class App(Gtk.Application):
         self.route = self.flask.route
         self.debug = False
 
-        if port == None:
+        if port is None:
             """Port lock to be used by server later
             Don't forget to `self.socket.close()`
             """
@@ -62,10 +62,10 @@ class App(Gtk.Application):
         scrollWindow.add(webkit_web_view)
         gtk_window.add(scrollWindow)
         gtk_window.connect('delete-event', self._on_gtk_window_destroy)
-        gtk_window.show_all()
         webkit_web_view.connect('notify::title', self._on_notify_title)
         self.gtk_window = gtk_window
         self.webkit_web_view = webkit_web_view
+        gtk_window.show_all()
 
     def do_activate(self):
         """Gtk.Application.run() will call this function()
@@ -90,7 +90,9 @@ class App(Gtk.Application):
         process = multiprocessing.Process(
             target=self.flask.run,
             args=(self.host, self.port, self.debug),
-            kwargs={'use_reloader': False},
+            kwargs={
+                'use_reloader': False,
+            },
         )
         process.start()
         return process
@@ -111,7 +113,7 @@ class App(Gtk.Application):
                 pass
 
     def run(self, *args, **kw):
-        self.server_process  = self._run_server(
+        self.server_process = self._run_server(
             port=self.port,
         )
         self._check_server()
